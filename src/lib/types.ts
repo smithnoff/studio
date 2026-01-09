@@ -2,9 +2,14 @@ import type { Timestamp } from "firebase/firestore";
 
 export interface Store {
   id: string;
-  nombre: string;
-  ciudad: string;
-  logo_url: string;
+  name: string;
+  city: string;
+  zipcode: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  phone: string;
+  imageUrl: string;
 }
 
 export interface Product {

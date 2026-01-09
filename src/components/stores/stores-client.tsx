@@ -72,7 +72,7 @@ export default function StoresClient() {
         await deleteStore(selectedStore.id);
         toast({
             title: "Store Deleted",
-            description: `The store "${selectedStore.nombre}" has been deleted.`,
+            description: `The store "${selectedStore.name}" has been deleted.`,
         });
     }
   };
@@ -94,16 +94,17 @@ export default function StoresClient() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[80px]">Logo</TableHead>
+              <TableHead className="w-[80px]">Image</TableHead>
               <TableHead>Name</TableHead>
-              <TableHead>City</TableHead>
+              <TableHead>Address</TableHead>
+              <TableHead>Phone</TableHead>
               <TableHead className="text-right w-[80px]">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {stores.length === 0 ? (
                 <TableRow>
-                    <TableCell colSpan={4} className="h-24 text-center">
+                    <TableCell colSpan={5} className="h-24 text-center">
                         No stores found.
                     </TableCell>
                 </TableRow>
@@ -111,16 +112,17 @@ export default function StoresClient() {
               <TableRow key={store.id}>
                 <TableCell>
                   <Image
-                    src={store.logo_url}
-                    alt={store.nombre}
+                    src={store.imageUrl}
+                    alt={store.name}
                     width={40}
                     height={40}
                     data-ai-hint="store logo"
                     className="rounded-full object-cover"
                   />
                 </TableCell>
-                <TableCell className="font-medium">{store.nombre}</TableCell>
-                <TableCell>{store.ciudad}</TableCell>
+                <TableCell className="font-medium">{store.name}</TableCell>
+                <TableCell>{store.address}, {store.city} {store.zipcode}</TableCell>
+                <TableCell>{store.phone}</TableCell>
                 <TableCell className="text-right">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -148,7 +150,7 @@ export default function StoresClient() {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>{selectedStore ? 'Edit Store' : 'Create New Store'}</DialogTitle>
           </DialogHeader>
@@ -162,7 +164,7 @@ export default function StoresClient() {
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
                 This action cannot be undone. This will permanently delete the store 
-                <span className="font-semibold"> "{selectedStore?.nombre}"</span>.
+                <span className="font-semibold"> "{selectedStore?.name}"</span>.
             </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

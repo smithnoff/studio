@@ -6,16 +6,26 @@ import { collection, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestor
 import { revalidatePath } from "next/cache";
 
 const storeSchema = z.object({
-    nombre: z.string().min(1, "Name is required"),
-    ciudad: z.string().min(1, "City is required"),
-    logo_url: z.string().url("Must be a valid URL").optional().or(z.literal('')),
+    name: z.string().min(1, "Name is required"),
+    city: z.string().min(1, "City is required"),
+    zipcode: z.string().min(1, "Zipcode is required"),
+    address: z.string().min(1, "Address is required"),
+    phone: z.string().min(1, "Phone is required"),
+    latitude: z.coerce.number(),
+    longitude: z.coerce.number(),
+    imageUrl: z.string().url("Must be a valid URL").optional().or(z.literal('')),
 });
 
 export async function createStore(formData: FormData) {
     const values = {
-        nombre: formData.get("nombre") as string,
-        ciudad: formData.get("ciudad") as string,
-        logo_url: formData.get("logo_url") as string,
+        name: formData.get("name") as string,
+        city: formData.get("city") as string,
+        zipcode: formData.get("zipcode") as string,
+        address: formData.get("address") as string,
+        phone: formData.get("phone") as string,
+        latitude: formData.get("latitude") as string,
+        longitude: formData.get("longitude") as string,
+        imageUrl: formData.get("imageUrl") as string,
     };
 
     const validatedFields = storeSchema.safeParse(values);
@@ -29,7 +39,7 @@ export async function createStore(formData: FormData) {
     try {
         await addDoc(collection(db, "stores"), {
             ...validatedFields.data,
-            logo_url: validatedFields.data.logo_url || `https://picsum.photos/seed/${validatedFields.data.nombre}/100/100`
+            imageUrl: validatedFields.data.imageUrl || `https://picsum.photos/seed/${validatedFields.data.name}/100/100`
         });
         revalidatePath("/dashboard/stores");
         return { message: "Store created successfully." };
@@ -40,9 +50,14 @@ export async function createStore(formData: FormData) {
 
 export async function updateStore(id: string, formData: FormData) {
     const values = {
-        nombre: formData.get("nombre") as string,
-        ciudad: formData.get("ciudad") as string,
-        logo_url: formData.get("logo_url") as string,
+        name: formData.get("name") as string,
+        city: formData.get("city") as string,
+        zipcode: formData.get("zipcode") as string,
+        address: formData.get("address") as string,
+        phone: formData.get("phone") as string,
+        latitude: formData.get("latitude") as string,
+        longitude: formData.get("longitude") as string,
+        imageUrl: formData.get("imageUrl") as string,
     };
 
     const validatedFields = storeSchema.safeParse(values);
@@ -57,7 +72,7 @@ export async function updateStore(id: string, formData: FormData) {
         const storeRef = doc(db, "stores", id);
         await updateDoc(storeRef, {
             ...validatedFields.data,
-            logo_url: validatedFields.data.logo_url || `https://picsum.photos/seed/${validatedFields.data.nombre}/100/100`
+            imageUrl: validatedFields.data.imageUrl || `https://picsum.photos/seed/${validatedFields.data.name}/100/100`
         });
         revalidatePath("/dashboard/stores");
         return { message: "Store updated successfully." };
