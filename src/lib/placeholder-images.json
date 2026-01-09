@@ -1,3 +1,52 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "store-logo-1",
+      "description": "Generic store logo 1",
+      "imageUrl": "https://images.unsplash.com/photo-1763988451321-e472507994f3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzdG9yZSUyMGxvZ298ZW58MHx8fHwxNzY3ODY3NTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "store logo"
+    },
+    {
+      "id": "store-logo-2",
+      "description": "Generic store logo 2",
+      "imageUrl": "https://images.unsplash.com/photo-1562581870-5b61efe35190?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzdG9yZSUyMGxvZ298ZW58MHx8fHwxNzY3ODY3NTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "store logo"
+    },
+    {
+      "id": "store-logo-3",
+      "description": "Generic store logo 3",
+      "imageUrl": "https://images.unsplash.com/photo-1763988451321-e472507994f3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzdG9yZSUyMGxvZ298ZW58MHx8fHwxNzY3ODY3NTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "store logo"
+    },
+    {
+      "id": "store-logo-4",
+      "description": "Generic store logo 4",
+      "imageUrl": "https://images.unsplash.com/photo-1685901109097-8c6206af315a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzdG9yZSUyMGxvZ298ZW58MHx8fHwxNzY3ODY3NTYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "store logo"
+    },
+    {
+      "id": "product-image-1",
+      "description": "Generic product image 1",
+      "imageUrl": "https://images.unsplash.com/photo-1515940175183-6798529cb860?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxnYWRnZXR8ZW58MHx8fHwxNzY3OTA4MzAwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gadget"
+    },
+    {
+      "id": "product-image-2",
+      "description": "Generic product image 2",
+      "imageUrl": "https://images.unsplash.com/photo-1618506408870-64d8bec48248?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxraXRjaGVuJTIwYXBwbGlhbmNlfGVufDB8fHx8MTc2Nzg5MzUxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "kitchen appliance"
+    },
+    {
+      "id": "product-image-3",
+      "description": "Generic product image 3",
+      "imageUrl": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjbG90aGluZ3xlbnwwfHx8fDE3Njc5MTk2MzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "clothing"
+    },
+    {
+      "id": "product-image-4",
+      "description": "Generic product image 4",
+      "imageUrl": "https://images.unsplash.com/photo-1517770413964-df8ca61194a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxib29rfGVufDB8fHx8MTc2Nzg1MDU2MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "book"
+    }
+  ]
 }
