@@ -46,7 +46,7 @@ import { Badge } from '../ui/badge';
 
 
 export default function StoresClient() {
-  const { data: stores, loading, error } = useFirestoreSubscription<Store>('stores');
+  const { data: stores, loading, error } = useFirestoreSubscription<Store>('Stores');
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [isAlertOpen, setAlertOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
