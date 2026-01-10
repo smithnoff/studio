@@ -37,7 +37,7 @@ export async function createStore(formData: FormData) {
     }
 
     try {
-        await addDoc(collection(db, "stores"), {
+        await addDoc(collection(db, "Stores"), {
             ...validatedFields.data,
             imageUrl: validatedFields.data.imageUrl || `https://picsum.photos/seed/${validatedFields.data.name}/100/100`
         });
@@ -69,7 +69,7 @@ export async function updateStore(id: string, formData: FormData) {
     }
     
     try {
-        const storeRef = doc(db, "stores", id);
+        const storeRef = doc(db, "Stores", id);
         await updateDoc(storeRef, {
             ...validatedFields.data,
             imageUrl: validatedFields.data.imageUrl || `https://picsum.photos/seed/${validatedFields.data.name}/100/100`
@@ -84,7 +84,7 @@ export async function updateStore(id: string, formData: FormData) {
 
 export async function deleteStore(id: string) {
     try {
-        await deleteDoc(doc(db, "stores", id));
+        await deleteDoc(doc(db, "Stores", id));
         revalidatePath("/dashboard/stores");
         return { message: "Store deleted successfully." };
     } catch (e) {

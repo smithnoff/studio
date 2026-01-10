@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { useFirestoreSubscription } from '@/hooks/use-firestore-subscription';
 import type { Product } from '@/lib/types';
@@ -12,8 +13,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { PageHeader } from '../ui/page-header';
 import { Badge } from '../ui/badge';
+import { Button } from '@/components/ui/button';
+import { PlusCircle } from 'lucide-react';
+import { ProductForm } from './product-form';
+
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat('en-US', {
@@ -24,13 +35,19 @@ function formatPrice(price: number) {
 
 export default function ProductsClient() {
   const { data: products, loading, error } = useFirestoreSubscription<Product>('Products');
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   if (loading) return <Loader className="h-[50vh]" />;
   if (error) return <p className="text-destructive">Error: {error.message}</p>;
 
   return (
     <>
-      <PageHeader title="Products" description="Browse the global product catalog." />
+      <PageHeader title="Products" description="Browse the global product catalog.">
+         <Button onClick={() => setDialogOpen(true)}>
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Create New Product
+        </Button>
+      </PageHeader>
       <div className="bg-card rounded-lg shadow-sm">
         <Table>
           <TableHeader>
@@ -72,6 +89,15 @@ export default function ProductsClient() {
           </TableBody>
         </Table>
       </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Create New Product</DialogTitle>
+          </DialogHeader>
+          <ProductForm onSuccess={() => setDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

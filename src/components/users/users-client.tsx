@@ -25,7 +25,7 @@ const getInitials = (name: string) => {
 
 
 export default function UsersClient() {
-  const { data: users, loading, error } = useFirestoreSubscription<AppUser>('users');
+  const { data: users, loading, error } = useFirestoreSubscription<AppUser>('Users');
 
   if (loading) return <Loader className="h-[50vh]" />;
   if (error) return <p className="text-destructive">Error: {error.message}</p>;
