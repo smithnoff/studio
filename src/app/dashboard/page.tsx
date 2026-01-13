@@ -26,9 +26,9 @@ function StatCard({ title, value, icon: Icon, loading }: { title: string, value:
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const { data: stores, loading: storesLoading } = useFirestoreSubscription<StoreType>('stores');
-  const { data: products, loading: productsLoading } = useFirestoreSubscription<Product>('products');
-  const { data: users, loading: usersLoading } = useFirestoreSubscription<AppUser>('users');
+  const { data: stores, loading: storesLoading } = useFirestoreSubscription<StoreType>('Stores');
+  const { data: products, loading: productsLoading } = useFirestoreSubscription<Product>('Products');
+  const { data: users, loading: usersLoading } = useFirestoreSubscription<AppUser>('Users');
 
 
   return (

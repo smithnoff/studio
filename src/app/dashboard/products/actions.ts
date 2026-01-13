@@ -13,7 +13,6 @@ const productSchema = z.object({
   image: z.string().url("Must be a valid URL").optional().or(z.literal('')),
   tags: z.string().optional(),
   availableIn: z.string().optional(),
-  price: z.coerce.number().min(0, "Price must be a positive number"),
   storeId: z.string().min(1, "Store ID is required"),
 });
 
@@ -37,6 +36,7 @@ export async function createProduct(formData: FormData) {
             tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
             availableIn: availableIn ? availableIn.split(',').map(id => id.trim()) : [],
             image: productData.image || `https://picsum.photos/seed/${productData.name}/400/400`,
+            price: 0,
         });
         revalidatePath("/dashboard/products");
         return { message: "Product created successfully." };

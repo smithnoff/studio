@@ -25,7 +25,6 @@ const productSchema = z.object({
   image: z.string().url("Must be a valid URL").optional().or(z.literal('')),
   tags: z.string().optional(),
   availableIn: z.string().optional(),
-  price: z.coerce.number().min(0, "Price must be a positive number"),
   storeId: z.string().min(1, "Store ID is required"),
 });
 
@@ -47,7 +46,6 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
       image: "",
       tags: "",
       availableIn: "",
-      price: 0,
       storeId: ""
     },
   });
@@ -123,19 +121,6 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
               <FormLabel>Category</FormLabel>
               <FormControl>
                 <Input placeholder="Electronics" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <Input type="number" step="0.01" placeholder="99.99" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
