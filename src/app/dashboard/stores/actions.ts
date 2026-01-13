@@ -56,6 +56,7 @@ export async function createStore(formData: FormData) {
             ...validatedFields.data,
             ...planDetails,
             isActive: true,
+            isOpen: true, // Por defecto la tienda está abierta
             createdAt: Date.now(),
             imageUrl: validatedFields.data.imageUrl || `https://picsum.photos/seed/${validatedFields.data.name}/100/100`
         });

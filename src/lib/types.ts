@@ -14,6 +14,7 @@ export interface Store {
   imageUrl: string;
   subscriptionPlan: SubscriptionPlan;
   isActive: boolean;
+  isOpen: boolean; // nuevo campo
   maxProducts: number;
   allowReservations: boolean;
   featured: boolean;
@@ -29,10 +30,22 @@ export interface Product {
   category: string;
   image: string;
   tags: string[];
-  availableIn: string[];
-  price: number; // float in kotlin
-  storeId: string;
 }
+
+export interface StoreProduct {
+    id: string;
+    storeId: string;
+    productId: string;
+    price: number;
+    isAvailable: boolean;
+    storeSpecificImage?: string;
+    // Combinamos la info del producto global para facilitar la visualización
+    name: string;
+    brand: string;
+    category: string;
+    globalImage: string;
+}
+
 
 export interface User {
   id: string; // from uid

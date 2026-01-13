@@ -16,10 +16,6 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { createProduct } from "@/app/dashboard/products/actions";
-import { useFirestoreSubscription } from "@/hooks/use-firestore-subscription";
-import type { Store } from "@/lib/types";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Loader from "../ui/loader";
 
 const productSchema = z.object({
   name: z.string().min(1, "El nombre es obligatorio"),
@@ -28,7 +24,6 @@ const productSchema = z.object({
   category: z.string().min(1, "La categoría es obligatoria"),
   image: z.string().url("Debe ser una URL válida").optional().or(z.literal('')),
   tags: z.string().optional(),
-  storeId: z.string().min(1, "Se requiere una tienda principal"),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -39,7 +34,6 @@ interface ProductFormProps {
 
 export function ProductForm({ onSuccess }: ProductFormProps) {
   const { toast } = useToast();
-  const { data: stores, loading: storesLoading } = useFirestoreSubscription<Store>('Stores');
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
@@ -50,7 +44,6 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
       category: "",
       image: "",
       tags: "",
-      storeId: ""
     },
   });
 
@@ -129,36 +122,6 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
               <FormControl>
                 <Input placeholder="Electrónica" {...field} />
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="storeId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Tienda Principal</FormLabel>
-               <Select onValueChange={field.onChange} defaultValue={field.value} disabled={storesLoading}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Seleccione una tienda" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {storesLoading ? (
-                    <div className="flex items-center justify-center p-4">
-                      <Loader text="Cargando tiendas..." />
-                    </div>
-                  ) : (
-                    stores.map(store => (
-                      <SelectItem key={store.id} value={store.id}>
-                        {store.name} ({store.subscriptionPlan})
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
               <FormMessage />
             </FormItem>
           )}

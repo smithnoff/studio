@@ -2,18 +2,21 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth, areFirebaseCredentialsSet } from '@/lib/firebase';
+import { auth, areFirebaseCredentialsSet, db } from '@/lib/firebase';
 import { usePathname, useRouter } from 'next/navigation';
 import Loader from '@/components/ui/loader';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
+import { doc, getDoc } from 'firebase/firestore';
+import type { AppUser } from '@/lib/types';
 
 interface AuthContextType {
   user: User | null;
+  appUser: AppUser | null;
   loading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+const AuthContext = createContext<AuthContextType>({ user: null, appUser: null, loading: true });
 
 function FirebaseConfigChecker({ children }: { children: React.ReactNode }) {
     if (!areFirebaseCredentialsSet) {
@@ -35,6 +38,7 @@ function FirebaseConfigChecker({ children }: { children: React.ReactNode }) {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [appUser, setAppUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
@@ -44,8 +48,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setLoading(false);
         return;
     }
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
+      if (user) {
+        const userDocRef = doc(db, 'Users', user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+        if (userDocSnap.exists()) {
+          setAppUser({ id: userDocSnap.id, ...userDocSnap.data() } as AppUser);
+        } else {
+          setAppUser(null);
+        }
+      } else {
+        setAppUser(null);
+      }
       setLoading(false);
     });
     return () => unsubscribe();
@@ -55,13 +70,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (loading || !areFirebaseCredentialsSet) return;
     
     const isAuthPage = pathname === '/login';
+    const isStorePanel = pathname.startsWith('/store');
+    const isAdminPanel = pathname.startsWith('/dashboard');
 
     if (!user && !isAuthPage) {
-      router.push('/login');
+        router.push('/login');
     } else if (user && isAuthPage) {
-      router.push('/dashboard');
+        if (appUser?.rol === 'admin') {
+            router.push('/dashboard');
+        } else if ((appUser?.rol === 'store_manager' || appUser?.rol === 'store_employee') && appUser.storeId) {
+            router.push(`/store/${appUser.storeId}`);
+        } else {
+            // Clientes u otros roles sin panel asignado
+            router.push('/login'); // O una página de "acceso denegado"
+        }
+    } else if (user && appUser) {
+        if (appUser.rol === 'admin' && !isAdminPanel) {
+             router.push('/dashboard');
+        } else if ((appUser.rol === 'store_manager' || appUser.rol === 'store_employee') && !isStorePanel) {
+            if (appUser.storeId) {
+                router.push(`/store/${appUser.storeId}`);
+            }
+        }
     }
-  }, [user, loading, pathname, router]);
+
+  }, [user, appUser, loading, pathname, router]);
 
   const isAuthPage = pathname === '/login';
 
@@ -74,7 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, appUser, loading }}>
         <FirebaseConfigChecker>
             {children}
         </FirebaseConfigChecker>
