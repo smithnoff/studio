@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -101,7 +102,7 @@ function OrderDetailsDialog({ order, open, onOpenChange }: { order: Order | null
                             {order.items.map(item => (
                                 <TableRow key={item.productId}>
                                     <TableCell className="flex items-center gap-2">
-                                        <Image src={item.image} alt={item.productName} width={40} height={40} className="rounded-md object-cover" />
+                                        <Image src={item.image || `https://picsum.photos/seed/${item.productId}/40/40`} alt={item.productName} width={40} height={40} className="rounded-md object-cover" />
                                         {item.productName}
                                     </TableCell>
                                     <TableCell className="text-center">{item.quantity}</TableCell>
