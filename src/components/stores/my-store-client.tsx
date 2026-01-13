@@ -25,6 +25,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { updateMyStore } from "@/app/store/[storeId]/my-store/actions";
 import { Switch } from "../ui/switch";
 import Image from "next/image";
+import { Label } from "../ui/label";
 
 const myStoreSchema = z.object({
   imageUrl: z.string().url("Debe ser una URL válida").optional().or(z.literal('')),
