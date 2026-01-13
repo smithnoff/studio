@@ -65,7 +65,7 @@ export function StoreProductForm({ storeId, product, onSuccess }: StoreProductFo
     } else {
         toast({
             title: "Producto Actualizado",
-            description: `El producto "${product.name}" ha sido actualizado en tu tienda.`,
+            description: `El producto "${product.productName}" ha sido actualizado en tu tienda.`,
         });
         onSuccess();
     }

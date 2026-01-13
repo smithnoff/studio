@@ -40,7 +40,7 @@ export interface StoreProduct {
     isAvailable: boolean;
     storeSpecificImage?: string;
     // Combinamos la info del producto global para facilitar la visualización
-    name: string;
+    productName: string;
     brand: string;
     category: string;
     globalImage: string;

@@ -122,7 +122,7 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
                                 <FormLabel>URL del Logo/Imagen</FormLabel>
                                 <FormControl>
                                     <div className="flex items-center gap-4">
-                                        <Image src={field.value || store.imageUrl} alt="Logo" width={64} height={64} className="rounded-lg object-cover" />
+                                        <Image src={field.value || store.imageUrl || `https://picsum.photos/seed/${store.id}/100/100`} alt="Logo" width={64} height={64} className="rounded-lg object-cover" />
                                         <Input placeholder="https://example.com/logo.png" {...field} disabled={!canEdit}/>
                                     </div>
                                 </FormControl>
@@ -192,5 +192,3 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
     </>
   );
 }
-
-    

@@ -213,14 +213,14 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
                 <TableCell>
                   <Image
                     src={product.storeSpecificImage || product.globalImage || `https://picsum.photos/seed/${product.productId}/64/64`}
-                    alt={product.name}
+                    alt={product.productName}
                     width={64}
                     height={64}
                     data-ai-hint="product photo"
                     className="rounded-md object-cover"
                   />
                 </TableCell>
-                <TableCell className="font-medium">{product.name}</TableCell>
+                <TableCell className="font-medium">{product.productName}</TableCell>
                 <TableCell>${product.price.toFixed(2)}</TableCell>
                 <TableCell>
                   <Badge variant={product.isAvailable ? 'default' : 'secondary'}>
@@ -267,7 +267,7 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
             <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>Gestionar Producto de Tienda</DialogTitle>
-                    <DialogDescription>{selectedProduct?.name}</DialogDescription>
+                    <DialogDescription>{selectedProduct?.productName}</DialogDescription>
                 </DialogHeader>
                 {selectedProduct && <StoreProductForm storeId={storeId} product={selectedProduct} onSuccess={() => setEditFormOpen(false)} />}
             </DialogContent>
@@ -278,7 +278,7 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
                 <AlertDialogHeader>
                 <AlertDialogTitle>¿Estas seguro de esta acción?</AlertDialogTitle>
                 <AlertDialogDescription>
-                    Esta acción eliminará el producto <span className="font-semibold">"{selectedProduct?.name}"</span> de tu tienda. No se eliminará del catálogo global.
+                    Esta acción eliminará el producto <span className="font-semibold">"{selectedProduct?.productName}"</span> de tu tienda. No se eliminará del catálogo global.
                 </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
