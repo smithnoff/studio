@@ -135,8 +135,8 @@ function UpdateStatusSelect({ storeId, orderId, currentStatus, onUpdate }: { sto
 
         const result = await updateOrderStatus(storeId, orderId, formData);
         
-        if (result.message.includes("No se pudo")) {
-             toast({ variant: 'destructive', title: 'Error', description: result.message });
+        if (result.error) {
+             toast({ variant: 'destructive', title: 'Error', description: result.error });
         } else {
              toast({ title: 'Éxito', description: result.message });
              onUpdate();
@@ -165,7 +165,7 @@ function UpdateStatusSelect({ storeId, orderId, currentStatus, onUpdate }: { sto
 
 
 export default function OrdersClient({ storeId }: OrdersClientProps) {
-  const { data: orders, loading, error } = useFirestoreQuery<Order>("Orders", [
+  const { data: orders, loading, error, refetch } = useFirestoreQuery<Order>("Orders", [
     where("storeId", "==", storeId),
   ]);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -220,7 +220,7 @@ export default function OrdersClient({ storeId }: OrdersClientProps) {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <UpdateStatusSelect storeId={storeId} orderId={order.id} currentStatus={order.status} onUpdate={() => {}} />
+                    <UpdateStatusSelect storeId={storeId} orderId={order.id} currentStatus={order.status} onUpdate={refetch} />
                   </TableCell>
                   <TableCell className="text-right">
                     <Button variant="ghost" size="icon" onClick={() => handleViewDetails(order)}>

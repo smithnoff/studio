@@ -16,6 +16,7 @@ export async function updateOrderStatus(storeId: string, orderId: string, formDa
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
+      error: "Campos inválidos."
     };
   }
 
@@ -32,6 +33,6 @@ export async function updateOrderStatus(storeId: string, orderId: string, formDa
     return { message: "El estado del pedido ha sido actualizado." };
   } catch (e) {
     console.error(e);
-    return { message: "No se pudo actualizar el estado del pedido." };
+    return { error: "No se pudo actualizar el estado del pedido." };
   }
 }
