@@ -6,14 +6,14 @@ import { collection, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "
 import { revalidatePath } from "next/cache";
 
 const storeSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    city: z.string().min(1, "City is required"),
-    zipcode: z.string().min(1, "Zipcode is required"),
-    address: z.string().min(1, "Address is required"),
-    phone: z.string().min(1, "Phone is required"),
+    name: z.string().min(1, "El nombre es obligatorio"),
+    city: z.string().min(1, "La ciudad es obligatoria"),
+    zipcode: z.string().min(1, "El código postal es obligatorio"),
+    address: z.string().min(1, "La dirección es obligatoria"),
+    phone: z.string().min(1, "El teléfono es obligatorio"),
     latitude: z.coerce.number(),
     longitude: z.coerce.number(),
-    imageUrl: z.string().url("Must be a valid URL").optional().or(z.literal('')),
+    imageUrl: z.string().url("Debe ser una URL válida").optional().or(z.literal('')),
     subscriptionPlan: z.enum(['BASIC', 'STANDARD', 'PREMIUM']),
 });
 
@@ -60,9 +60,9 @@ export async function createStore(formData: FormData) {
             imageUrl: validatedFields.data.imageUrl || `https://picsum.photos/seed/${validatedFields.data.name}/100/100`
         });
         revalidatePath("/dashboard/stores");
-        return { message: "Store created successfully." };
+        return { message: "Tienda creada exitosamente." };
     } catch (e) {
-        return { message: "Failed to create store." };
+        return { message: "No se pudo crear la tienda." };
     }
 }
 
@@ -97,9 +97,9 @@ export async function updateStore(id: string, formData: FormData) {
             imageUrl: validatedFields.data.imageUrl || `https://picsum.photos/seed/${validatedFields.data.name}/100/100`
         });
         revalidatePath("/dashboard/stores");
-        return { message: "Store updated successfully." };
+        return { message: "Tienda actualizada exitosamente." };
     } catch (e) {
-        return { message: "Failed to update store." };
+        return { message: "No se pudo actualizar la tienda." };
     }
 }
 
@@ -108,8 +108,8 @@ export async function deleteStore(id: string) {
     try {
         await deleteDoc(doc(db, "Stores", id));
         revalidatePath("/dashboard/stores");
-        return { message: "Store deleted successfully." };
+        return { message: "Tienda eliminada exitosamente." };
     } catch (e) {
-        return { message: "Failed to delete store." };
+        return { message: "No se pudo eliminar la tienda." };
     }
 }

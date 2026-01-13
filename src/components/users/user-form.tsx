@@ -28,9 +28,9 @@ import { useFirestoreSubscription } from '@/hooks/use-firestore-subscription';
 import Loader from '../ui/loader';
 
 const userSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  email: z.string().email('Invalid email address.'),
-  password: z.string().min(6, 'Password must be at least 6 characters.'),
+  name: z.string().min(1, 'El nombre es obligatorio'),
+  email: z.string().email('Dirección de correo electrónico inválida.'),
+  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres.'),
   rol: z.enum(['admin', 'store_manager', 'store_employee', 'customer']),
   storeId: z.string().optional(),
 });
@@ -73,9 +73,9 @@ export function UserForm({ onSuccess }: UserFormProps) {
     // Note: We are simulating user creation. A real implementation needs a secure backend.
     toast({
       variant: 'destructive',
-      title: 'Feature Not Implemented',
+      title: 'Función No Implementada',
       description:
-        'User creation from the admin panel is not fully supported in this environment. Please use the Firebase Console to add new users for now.',
+        'La creación de usuarios desde el panel de administración no está completamente soportada en este entorno. Por favor, usa la Consola de Firebase para añadir nuevos usuarios por ahora.',
     });
     onSuccess();
     return;
@@ -91,7 +91,7 @@ export function UserForm({ onSuccess }: UserFormProps) {
       }
     } else {
         toast({
-            title: "User Created",
+            title: "Usuario Creado",
             description: result.message,
         });
         onSuccess();
@@ -110,7 +110,7 @@ export function UserForm({ onSuccess }: UserFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel>Nombre Completo</FormLabel>
               <FormControl>
                 <Input placeholder="John Doe" {...field} />
               </FormControl>
@@ -123,9 +123,9 @@ export function UserForm({ onSuccess }: UserFormProps) {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Correo Electrónico</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="user@example.com" {...field} />
+                <Input type="email" placeholder="usuario@ejemplo.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -136,7 +136,7 @@ export function UserForm({ onSuccess }: UserFormProps) {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Contraseña</FormLabel>
               <FormControl>
                 <Input type="password" placeholder="••••••••" {...field} />
               </FormControl>
@@ -150,18 +150,18 @@ export function UserForm({ onSuccess }: UserFormProps) {
           name="rol"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Role</FormLabel>
+              <FormLabel>Rol</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a role" />
+                    <SelectValue placeholder="Selecciona un rol" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="store_manager">Store Manager</SelectItem>
-                  <SelectItem value="store_employee">Store Employee</SelectItem>
-                  <SelectItem value="customer">Customer</SelectItem>
+                  <SelectItem value="admin">Administrador</SelectItem>
+                  <SelectItem value="store_manager">Gerente de Tienda</SelectItem>
+                  <SelectItem value="store_employee">Empleado de Tienda</SelectItem>
+                  <SelectItem value="customer">Cliente</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -175,7 +175,7 @@ export function UserForm({ onSuccess }: UserFormProps) {
             name="storeId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Store</FormLabel>
+                <FormLabel>Tienda</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -183,13 +183,13 @@ export function UserForm({ onSuccess }: UserFormProps) {
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a store" />
+                      <SelectValue placeholder="Selecciona una tienda" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {storesLoading ? (
                       <div className="flex items-center justify-center p-4">
-                        <Loader text="Loading stores..." />
+                        <Loader text="Cargando tiendas..." />
                       </div>
                     ) : (
                       stores.map(store => (
@@ -213,7 +213,7 @@ export function UserForm({ onSuccess }: UserFormProps) {
         )}
 
         <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? 'Creating...' : 'Create User'}
+          {form.formState.isSubmitting ? 'Creando...' : 'Crear Usuario'}
         </Button>
       </form>
     </Form>

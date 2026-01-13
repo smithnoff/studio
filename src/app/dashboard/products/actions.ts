@@ -7,13 +7,13 @@ import { revalidatePath } from "next/cache";
 import type { Store } from "@/lib/types";
 
 const productSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  brand: z.string().min(1, "Brand is required"),
-  description: z.string().min(1, "Description is required"),
-  category: z.string().min(1, "Category is required"),
-  image: z.string().url("Must be a valid URL").optional().or(z.literal('')),
+  name: z.string().min(1, "El nombre es obligatorio"),
+  brand: z.string().min(1, "La marca es obligatoria"),
+  description: z.string().min(1, "La descripción es obligatoria"),
+  category: z.string().min(1, "La categoría es obligatoria"),
+  image: z.string().url("Debe ser una URL válida").optional().or(z.literal('')),
   tags: z.string().optional(),
-  storeId: z.string().min(1, "A primary store is required"),
+  storeId: z.string().min(1, "Se requiere una tienda principal"),
 });
 
 export async function createProduct(formData: FormData) {
@@ -34,7 +34,7 @@ export async function createProduct(formData: FormData) {
         const storeSnap = await getDoc(storeRef);
 
         if (!storeSnap.exists()) {
-            return { errors: { _form: ["Selected store does not exist."] } };
+            return { errors: { _form: ["La tienda seleccionada no existe."] } };
         }
 
         const store = storeSnap.data() as Store;
@@ -44,7 +44,7 @@ export async function createProduct(formData: FormData) {
         const currentProductCount = (await getCountFromServer(productsQuery)).data().count;
 
         if (currentProductCount >= maxProducts) {
-            return { errors: { _form: [`Product limit of ${maxProducts} for store "${store.name}" has been reached. Please upgrade the subscription plan.`] } };
+            return { errors: { _form: [`Se ha alcanzado el límite de ${maxProducts} productos para la tienda "${store.name}". Por favor, actualiza el plan de suscripción.`] } };
         }
 
         await addDoc(collection(db, "Products"), {
@@ -56,11 +56,9 @@ export async function createProduct(formData: FormData) {
             price: 0,
         });
         revalidatePath("/dashboard/products");
-        return { message: "Product created successfully." };
+        return { message: "Producto creado exitosamente." };
     } catch (e: any) {
         console.error(e);
-        return { errors: { _form: ["Failed to create product."] } };
+        return { errors: { _form: ["No se pudo crear el producto."] } };
     }
 }
-
-    

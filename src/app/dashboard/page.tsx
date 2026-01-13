@@ -35,28 +35,28 @@ export default function DashboardPage() {
     <div>
       <PageHeader
         title="Dashboard"
-        description={`Welcome back, ${user?.displayName || 'Admin'}!`}
+        description={`¡Bienvenido de nuevo, ${user?.displayName || 'Admin'}!`}
       />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <StatCard title="Total Stores" value={stores.length} icon={Store} loading={storesLoading} />
-        <StatCard title="Total Products" value={products.length} icon={Package} loading={productsLoading} />
-        <StatCard title="Total Users" value={users.length} icon={Users} loading={usersLoading} />
+        <StatCard title="Tiendas Totales" value={stores.length} icon={Store} loading={storesLoading} />
+        <StatCard title="Productos Totales" value={products.length} icon={Package} loading={productsLoading} />
+        <StatCard title="Usuarios Totales" value={users.length} icon={Users} loading={usersLoading} />
       </div>
 
        <div className="mt-8">
         <Card>
             <CardHeader>
-                <CardTitle>Getting Started</CardTitle>
+                <CardTitle>Primeros Pasos</CardTitle>
             </CardHeader>
             <CardContent>
                 <p className="text-muted-foreground">
-                    This is your Akista admin panel. Here's what you can do:
+                    Este es tu panel de administración de Akista. Esto es lo que puedes hacer:
                 </p>
                 <ul className="list-disc pl-5 mt-4 space-y-2 text-sm text-muted-foreground">
-                    <li>Navigate using the sidebar on the left.</li>
-                    <li><span className="font-semibold text-foreground">Manage Stores:</span> Add, view, edit, and delete store information.</li>
-                    <li><span className="font-semibold text-foreground">View Products:</span> Browse the global product catalog.</li>
-                    <li><span className="font-semibold text-foreground">View Users:</span> See a list of all registered application users.</li>
+                    <li>Navega usando la barra lateral a la izquierda.</li>
+                    <li><span className="font-semibold text-foreground">Gestionar Tiendas:</span> Añade, visualiza, edita y elimina la información de las tiendas.</li>
+                    <li><span className="font-semibold text-foreground">Ver Productos:</span> Navega por el catálogo global de productos.</li>
+                    <li><span className="font-semibold text-foreground">Ver Usuarios:</span> Mira una lista de todos los usuarios registrados en la aplicación.</li>
                 </ul>
             </CardContent>
         </Card>

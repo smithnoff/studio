@@ -13,7 +13,7 @@ export default function HomePage() {
 
   return (
     <div className="h-screen w-screen flex items-center justify-center">
-      <Loader text="Redirecting..." />
+      <Loader text="Redirigiendo..." />
     </div>
   );
 }

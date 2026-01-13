@@ -10,9 +10,9 @@ import { doc, setDoc } from 'firebase/firestore';
 import { revalidatePath } from 'next/cache';
 
 const userSchema = z.object({
-  email: z.string().email('Invalid email address.'),
-  password: z.string().min(6, 'Password must be at least 6 characters.'),
-  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Dirección de correo electrónico inválida.'),
+  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres.'),
+  name: z.string().min(1, 'El nombre es obligatorio'),
   rol: z.enum(['admin', 'store_manager', 'store_employee', 'customer']),
   storeId: z.string().optional(),
 });
@@ -47,7 +47,7 @@ export async function createUser(formData: FormData) {
     // A proper implementation would require a dedicated backend setup.
     return {
       message:
-        'User creation from server action is not fully implemented. Please use Firebase Console.',
+        'La creación de usuarios desde la acción del servidor no está completamente implementada. Por favor, use la consola de Firebase.',
       // The below code would run on the client, not here.
       // const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       // const user = userCredential.user;
@@ -65,13 +65,13 @@ export async function createUser(formData: FormData) {
       //     favoriteStoreIds: [],
       // });
       // revalidatePath("/dashboard/users");
-      // return { message: "User created successfully. A verification email has been sent." };
+      // return { message: "Usuario creado exitosamente. Se ha enviado un correo de verificación." };
     };
   } catch (e: any) {
     console.error(e);
     // Firebase errors have a 'code' property e.g. 'auth/email-already-in-use'
     return {
-      message: e.message || 'Failed to create user.',
+      message: e.message || 'No se pudo crear el usuario.',
       errors: { _form: [e.message] },
     };
   }

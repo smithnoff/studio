@@ -67,7 +67,7 @@ export default function ProductsClient() {
             {products.length === 0 ? (
                 <TableRow>
                     <TableCell colSpan={5} className="h-24 text-center">
-                        No products found.
+                        No se encontraron productos.
                     </TableCell>
                 </TableRow>
             ) : products.map((product) => (
@@ -85,7 +85,7 @@ export default function ProductsClient() {
                 <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell>{product.brand}</TableCell>
                 <TableCell>
-                    {storesMap[product.storeId] || 'Unknown'}
+                    {storesMap[product.storeId] || 'Desconocido'}
                 </TableCell>
                 <TableCell>
                     {product.category}
@@ -107,5 +107,3 @@ export default function ProductsClient() {
     </>
   );
 }
-
-    

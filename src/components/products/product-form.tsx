@@ -22,13 +22,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Loader from "../ui/loader";
 
 const productSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  brand: z.string().min(1, "Brand is required"),
-  description: z.string().min(1, "Description is required"),
-  category: z.string().min(1, "Category is required"),
-  image: z.string().url("Must be a valid URL").optional().or(z.literal('')),
+  name: z.string().min(1, "El nombre es obligatorio"),
+  brand: z.string().min(1, "La marca es obligatoria"),
+  description: z.string().min(1, "La descripción es obligatoria"),
+  category: z.string().min(1, "La categoría es obligatoria"),
+  image: z.string().url("Debe ser una URL válida").optional().or(z.literal('')),
   tags: z.string().optional(),
-  storeId: z.string().min(1, "A primary store is required"),
+  storeId: z.string().min(1, "Se requiere una tienda principal"),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -71,8 +71,8 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
         }
     } else {
         toast({
-            title: "Product Created",
-            description: `The product "${data.name}" has been created successfully.`,
+            title: "Producto Creado",
+            description: `El producto "${data.name}" ha sido creado exitosamente.`,
         });
         onSuccess();
     }
@@ -86,9 +86,9 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Product Name</FormLabel>
+              <FormLabel>Nombre del Producto</FormLabel>
               <FormControl>
-                <Input placeholder="Wireless Headphones" {...field} />
+                <Input placeholder="Auriculares Inalámbricos" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -99,9 +99,9 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
           name="brand"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Brand</FormLabel>
+              <FormLabel>Marca</FormLabel>
               <FormControl>
-                <Input placeholder="BrandName" {...field} />
+                <Input placeholder="NombreDeLaMarca" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -112,9 +112,9 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Descripción</FormLabel>
               <FormControl>
-                <Textarea placeholder="High-quality wireless headphones..." {...field} />
+                <Textarea placeholder="Auriculares inalámbricos de alta calidad..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -125,9 +125,9 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
           name="category"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Category</FormLabel>
+              <FormLabel>Categoría</FormLabel>
               <FormControl>
-                <Input placeholder="Electronics" {...field} />
+                <Input placeholder="Electrónica" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -168,9 +168,9 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
           name="image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image URL</FormLabel>
+              <FormLabel>URL de la Imagen</FormLabel>
               <FormControl>
-                <Input placeholder="https://example.com/product.png" {...field} />
+                <Input placeholder="https://ejemplo.com/producto.png" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -181,9 +181,9 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
           name="tags"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tags (comma-separated)</FormLabel>
+              <FormLabel>Etiquetas (separadas por comas)</FormLabel>
               <FormControl>
-                <Input placeholder="audio, wireless, bluetooth" {...field} />
+                <Input placeholder="audio, inalámbrico, bluetooth" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -197,11 +197,9 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
         )}
 
         <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Saving..." : "Save Product"}
+          {form.formState.isSubmitting ? "Guardando..." : "Guardar Producto"}
         </Button>
       </form>
     </Form>
   );
 }
-
-    

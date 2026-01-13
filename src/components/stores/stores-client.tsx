@@ -71,8 +71,8 @@ export default function StoresClient() {
     if (selectedStore) {
         await deleteStore(selectedStore.id);
         toast({
-            title: "Store Deleted",
-            description: `The store "${selectedStore.name}" has been deleted.`,
+            title: "Tienda Eliminada",
+            description: `La tienda "${selectedStore.name}" ha sido eliminada.`,
         });
     }
   };
@@ -83,7 +83,7 @@ export default function StoresClient() {
 
   return (
     <>
-      <PageHeader title="Tiendas" description="Administra las tiendas .">
+      <PageHeader title="Tiendas" description="Administra las tiendas.">
         <Button onClick={handleAddNew}>
             <PlusCircle className="mr-2 h-4 w-4" />
             Crear nueva tienda
@@ -106,7 +106,7 @@ export default function StoresClient() {
             {stores.length === 0 ? (
                 <TableRow>
                     <TableCell colSpan={6} className="h-24 text-center">
-                        No stores found.
+                        No se encontraron tiendas.
                     </TableCell>
                 </TableRow>
             ) : stores.map((store) => (
@@ -158,7 +158,7 @@ export default function StoresClient() {
       <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>{selectedStore ? 'Edit Store' : 'Create New Store'}</DialogTitle>
+            <DialogTitle>{selectedStore ? 'Editar Tienda' : 'Crear Nueva Tienda'}</DialogTitle>
           </DialogHeader>
           <StoreForm store={selectedStore} onSuccess={() => setDialogOpen(false)} />
         </DialogContent>
@@ -169,12 +169,12 @@ export default function StoresClient() {
             <AlertDialogHeader>
             <AlertDialogTitle>¿Estas seguro de esta acción?</AlertDialogTitle>
             <AlertDialogDescription>
-                Esta acción no se puede deshacer y se eliminara la tienda permanentement 
+                Esta acción no se puede deshacer y se eliminara la tienda permanentemente 
                 <span className="font-semibold"> "{selectedStore?.name}"</span>.
             </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction onClick={confirmDelete} className="bg-destructive hover:bg-destructive/90">
                 Borrar
             </AlertDialogAction>

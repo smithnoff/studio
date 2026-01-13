@@ -22,16 +22,16 @@ export default function LoginPage() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast({
-        title: "Login Successful",
-        description: "Welcome back!",
+        title: "Inicio de Sesión Exitoso",
+        description: "¡Bienvenido de nuevo!",
       });
       // The AuthProvider will handle the redirect
     } catch (error: any) {
       console.error(error);
       toast({
         variant: "destructive",
-        title: "Login Failed",
-        description: error.message || "An unknown error occurred.",
+        title: "Fallo en el Inicio de Sesión",
+        description: error.message || "Ocurrió un error desconocido.",
       });
     } finally {
       setIsLoading(false);
@@ -48,16 +48,16 @@ export default function LoginPage() {
                 </div>
             </div>
           <CardTitle className="text-2xl font-bold">Akista Admin</CardTitle>
-          <CardDescription>Enter your credentials to access the panel</CardDescription>
+          <CardDescription>Introduce tus credenciales para acceder al panel</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Correo Electrónico</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@example.com"
+                placeholder="admin@ejemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -65,7 +65,7 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Contraseña</Label>
               <Input
                 id="password"
                 type="password"
@@ -81,7 +81,7 @@ export default function LoginPage() {
               ) : (
                 <LogIn className="mr-2 h-4 w-4" />
               )}
-              Sign In
+              Iniciar Sesión
             </Button>
           </form>
         </CardContent>

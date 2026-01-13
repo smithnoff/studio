@@ -22,14 +22,14 @@ import { Card } from "../ui/card";
 import { cn } from "@/lib/utils";
 
 const storeSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
-  city: z.string().min(2, "City must be at least 2 characters."),
-  zipcode: z.string().min(2, "Zipcode must be at least 2 characters."),
-  address: z.string().min(2, "Address must be at least 2 characters."),
-  phone: z.string().min(2, "Phone must be at least 2 characters."),
+  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres."),
+  city: z.string().min(2, "La ciudad debe tener al menos 2 caracteres."),
+  zipcode: z.string().min(2, "El código postal debe tener al menos 2 caracteres."),
+  address: z.string().min(2, "La dirección debe tener al menos 2 caracteres."),
+  phone: z.string().min(2, "El teléfono debe tener al menos 2 caracteres."),
   latitude: z.coerce.number(),
   longitude: z.coerce.number(),
-  imageUrl: z.string().url("Must be a valid URL").optional().or(z.literal('')),
+  imageUrl: z.string().url("Debe ser una URL válida").optional().or(z.literal('')),
   subscriptionPlan: z.enum(['BASIC', 'STANDARD', 'PREMIUM']),
 });
 
@@ -91,8 +91,8 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
         // This part is for server-side validation errors, not implemented in this version
     } else {
         toast({
-            title: store ? "Store Updated" : "Store Created",
-            description: `The store "${data.name}" has been saved successfully.`,
+            title: store ? "Tienda Actualizada" : "Tienda Creada",
+            description: `La tienda "${data.name}" se ha guardado exitosamente.`,
         });
         onSuccess();
     }
@@ -145,9 +145,9 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Nombre</FormLabel>
               <FormControl>
-                <Input placeholder="Awesome Store" {...field} />
+                <Input placeholder="Tienda Increíble" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -158,9 +158,9 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Address</FormLabel>
+              <FormLabel>Dirección</FormLabel>
               <FormControl>
-                <Input placeholder="123 Main St" {...field} />
+                <Input placeholder="Calle Principal 123" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -171,9 +171,9 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
           name="city"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>City</FormLabel>
+              <FormLabel>Ciudad</FormLabel>
               <FormControl>
-                <Input placeholder="Metropolis" {...field} />
+                <Input placeholder="Metrópolis" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -184,7 +184,7 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
           name="zipcode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Zipcode</FormLabel>
+              <FormLabel>Código Postal</FormLabel>
               <FormControl>
                 <Input placeholder="12345" {...field} />
               </FormControl>
@@ -197,7 +197,7 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Phone</FormLabel>
+              <FormLabel>Teléfono</FormLabel>
               <FormControl>
                 <Input placeholder="555-123-4567" {...field} />
               </FormControl>
@@ -211,7 +211,7 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
             name="latitude"
             render={({ field }) => (
                 <FormItem className="w-1/2">
-                <FormLabel>Latitude</FormLabel>
+                <FormLabel>Latitud</FormLabel>
                 <FormControl>
                     <Input type="number" step="any" placeholder="40.7128" {...field} />
                 </FormControl>
@@ -224,7 +224,7 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
             name="longitude"
             render={({ field }) => (
                 <FormItem className="w-1/2">
-                <FormLabel>Longitude</FormLabel>
+                <FormLabel>Longitud</FormLabel>
                 <FormControl>
                     <Input type="number" step="any" placeholder="-74.0060" {...field} />
                 </FormControl>
@@ -239,7 +239,7 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
           name="imageUrl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image URL</FormLabel>
+              <FormLabel>URL de la Imagen</FormLabel>
               <FormControl>
                 <Input placeholder="https://example.com/logo.png" {...field} />
               </FormControl>
@@ -248,7 +248,7 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
           )}
         />
         <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Saving..." : "Save Store"}
+          {form.formState.isSubmitting ? "Guardando..." : "Guardar Tienda"}
         </Button>
       </form>
     </Form>

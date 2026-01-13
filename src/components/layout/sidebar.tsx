@@ -50,16 +50,16 @@ export default function Sidebar() {
     try {
       await signOut(auth);
       toast({
-        title: "Logged Out",
-        description: "You have been successfully logged out.",
+        title: "Sesión Cerrada",
+        description: "Has cerrado sesión exitosamente.",
       });
       // AuthProvider will redirect
     } catch (error) {
       console.error("Logout Error:", error);
       toast({
         variant: "destructive",
-        title: "Logout Failed",
-        description: "An error occurred while logging out.",
+        title: "Fallo al Cerrar Sesión",
+        description: "Ocurrió un error al cerrar la sesión.",
       });
     }
   };

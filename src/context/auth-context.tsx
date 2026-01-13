@@ -21,9 +21,9 @@ function FirebaseConfigChecker({ children }: { children: React.ReactNode }) {
             <div className="flex h-screen items-center justify-center bg-background p-4">
                 <Alert variant="destructive" className="max-w-lg">
                     <Terminal className="h-4 w-4" />
-                    <AlertTitle>Firebase Configuration Missing</AlertTitle>
+                    <AlertTitle>Falta la Configuración de Firebase</AlertTitle>
                     <AlertDescription>
-                        Your Firebase environment variables are not set. Please create a <code>.env.local</code> file and add your Firebase project credentials. Check <code>.env.local.example</code> for the required variables.
+                        Las variables de entorno de Firebase no están configuradas. Por favor, crea un archivo <code>.env.local</code> y añade las credenciales de tu proyecto de Firebase. Revisa <code>.env.local.example</code> para ver las variables requeridas.
                     </AlertDescription>
                 </Alert>
             </div>
@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   if (loading && !isAuthPage) {
     return (
       <div className="h-screen w-screen flex items-center justify-center">
-        <Loader text="Authenticating..." />
+        <Loader text="Autenticando..." />
       </div>
     );
   }
