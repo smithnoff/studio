@@ -16,8 +16,8 @@ export function useFirestoreQuery<T>(path: string, constraints: QueryConstraint[
     try {
         const querySnapshot = await getDocs(q);
         const documents = querySnapshot.docs.map(doc => ({
-            id: doc.id,
             ...doc.data(),
+            id: doc.id,
         })) as T[];
         setData(documents);
     } catch(err: any) {
@@ -31,8 +31,8 @@ export function useFirestoreQuery<T>(path: string, constraints: QueryConstraint[
   useEffect(() => {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const documents = querySnapshot.docs.map(doc => ({
-        id: doc.id,
         ...doc.data(),
+        id: doc.id,
       })) as T[];
       setData(documents);
       setLoading(false);

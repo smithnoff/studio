@@ -20,7 +20,7 @@ export function useDocument<T>(path: string) {
 
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
-        setData({ id: docSnap.id, ...docSnap.data() } as T);
+        setData({ ...docSnap.data(), id: docSnap.id } as T);
       } else {
         setData(null);
       }

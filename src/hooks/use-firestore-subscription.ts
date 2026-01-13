@@ -17,8 +17,8 @@ export function useFirestoreSubscription<T>(collectionName: string) {
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const documents = querySnapshot.docs.map(doc => ({
-        id: doc.id,
         ...doc.data(),
+        id: doc.id,
       })) as T[];
       setData(documents);
       setLoading(false);
