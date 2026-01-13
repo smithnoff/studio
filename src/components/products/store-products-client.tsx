@@ -37,7 +37,6 @@ import { StoreProductForm } from './store-product-form';
 import { useAuth } from '@/context/auth-context';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../ui/alert-dialog';
 import { where } from 'firebase/firestore';
-import { revalidatePath } from 'next/cache';
 
 interface StoreProductsClientProps {
   storeId: string;
@@ -164,13 +163,13 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
 
   const confirmDelete = async () => {
     if (selectedProduct) {
-        const result = await removeProductFromStore(selectedProduct.id);
+        const result = await removeProductFromStore(storeId, selectedProduct.id);
         if (result.error) {
             toast({ variant: 'destructive', title: 'Error', description: result.error });
         } else {
             toast({ title: 'Éxito', description: result.message });
-            revalidatePath(`/store/${storeId}/my-products`);
         }
+        setAlertOpen(false);
     }
   };
 
@@ -269,7 +268,7 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
                     <DialogTitle>Gestionar Producto de Tienda</DialogTitle>
                     <DialogDescription>{selectedProduct?.name}</DialogDescription>
                 </DialogHeader>
-                {selectedProduct && <StoreProductForm storeId={storeId} product={selectedProduct} onSuccess={() => { setEditFormOpen(false); revalidatePath(`/store/${storeId}/my-products`); }} />}
+                {selectedProduct && <StoreProductForm storeId={storeId} product={selectedProduct} onSuccess={() => setEditFormOpen(false)} />}
             </DialogContent>
         </Dialog>
 

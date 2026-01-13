@@ -98,7 +98,7 @@ const updateStoreProductSchema = z.object({
 });
 
 
-export async function updateStoreProduct(inventoryId: string, formData: FormData) {
+export async function updateStoreProduct(storeId: string, inventoryId: string, formData: FormData) {
     const values = Object.fromEntries(formData.entries());
     const validatedFields = updateStoreProductSchema.safeParse(values);
 
@@ -108,11 +108,9 @@ export async function updateStoreProduct(inventoryId: string, formData: FormData
 
     try {
         const productRef = doc(db, `Inventory`, inventoryId);
-        // We are not passing storeId, so we can't revalidate the path
         await updateDoc(productRef, validatedFields.data);
 
-        // This revalidation might not work as expected without the storeId
-        // revalidatePath(`/store/${storeId}/my-products`);
+        revalidatePath(`/store/${storeId}/my-products`);
         return { message: 'Producto actualizado.' };
     } catch(e) {
         return { errors: { _form: ['No se pudo actualizar el producto.'] } };
@@ -120,11 +118,10 @@ export async function updateStoreProduct(inventoryId: string, formData: FormData
 }
 
 
-export async function removeProductFromStore(inventoryId: string) {
+export async function removeProductFromStore(storeId: string, inventoryId: string) {
     try {
         await deleteDoc(doc(db, `Inventory`, inventoryId));
-        // This revalidation might not work as expected without the storeId
-        // revalidatePath(`/store/${storeId}/my-products`);
+        revalidatePath(`/store/${storeId}/my-products`);
         return { message: 'Producto eliminado de tu tienda.' };
     } catch(e) {
         return { error: 'No se pudo eliminar el producto.' };
