@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from 'react';
+import { useParams } from 'next/navigation';
 import { useAuth } from '@/context/auth-context';
 import { useDocument } from '@/hooks/use-document';
 import { useFirestoreQuery } from '@/hooks/use-firestore-query';
@@ -26,8 +27,9 @@ function StatCard({ title, value, icon: Icon, loading }: { title: string, value:
   );
 }
 
-export default function StoreDashboardPage({ params }: { params: { storeId: string }}) {
-  const { storeId } = params;
+export default function StoreDashboardPage() {
+  const params = useParams();
+  const storeId = params.storeId as string;
   const { appUser } = useAuth();
   const { data: store, loading: storeLoading } = useDocument<Store>(`Stores/${storeId}`);
   const { data: storeProducts, loading: productsLoading } = useFirestoreQuery<StoreProduct>(`Stores/${storeId}/StoreProducts`);
