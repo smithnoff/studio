@@ -36,6 +36,8 @@ import { Badge } from '../ui/badge';
 import { StoreProductForm } from './store-product-form';
 import { useAuth } from '@/context/auth-context';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../ui/alert-dialog';
+import { where } from 'firebase/firestore';
+import { revalidatePath } from 'next/cache';
 
 interface StoreProductsClientProps {
   storeId: string;
@@ -141,14 +143,14 @@ function AddProductDialog({
 
 export default function StoreProductsClient({ storeId }: StoreProductsClientProps) {
   const { appUser } = useAuth();
-  const { data: storeProducts, loading, error } = useFirestoreQuery<StoreProduct>(`Stores/${storeId}/StoreProducts`);
+  const { data: storeProducts, loading, error } = useFirestoreQuery<StoreProduct>('Inventory', [where('storeId', '==', storeId)]);
   const [isAddDialogOpen, setAddDialogOpen] = useState(false);
   const [isEditFormOpen, setEditFormOpen] = useState(false);
   const [isAlertOpen, setAlertOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<StoreProduct | null>(null);
   const { toast } = useToast();
   
-  const existingProductIds = useMemo(() => storeProducts.map(p => (p as any).productId), [storeProducts]);
+  const existingProductIds = useMemo(() => storeProducts.map(p => p.productId), [storeProducts]);
 
   const handleEdit = (product: StoreProduct) => {
     setSelectedProduct(product);
@@ -162,11 +164,12 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
 
   const confirmDelete = async () => {
     if (selectedProduct) {
-        const result = await removeProductFromStore(storeId, selectedProduct.id);
+        const result = await removeProductFromStore(selectedProduct.id);
         if (result.error) {
             toast({ variant: 'destructive', title: 'Error', description: result.error });
         } else {
             toast({ title: 'Éxito', description: result.message });
+            revalidatePath(`/store/${storeId}/my-products`);
         }
     }
   };
@@ -220,7 +223,7 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
                 <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell>${product.price.toFixed(2)}</TableCell>
                 <TableCell>
-                  <Badge variant={product.isAvailable ? 'default' : 'destructive'}>
+                  <Badge variant={product.isAvailable ? 'default' : 'secondary'}>
                     {product.isAvailable ? 'Disponible' : 'No Disponible'}
                   </Badge>
                 </TableCell>
@@ -266,7 +269,7 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
                     <DialogTitle>Gestionar Producto de Tienda</DialogTitle>
                     <DialogDescription>{selectedProduct?.name}</DialogDescription>
                 </DialogHeader>
-                {selectedProduct && <StoreProductForm storeId={storeId} product={selectedProduct} onSuccess={() => setEditFormOpen(false)} />}
+                {selectedProduct && <StoreProductForm storeId={storeId} product={selectedProduct} onSuccess={() => { setEditFormOpen(false); revalidatePath(`/store/${storeId}/my-products`); }} />}
             </DialogContent>
         </Dialog>
 

@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PageHeader } from '@/components/ui/page-header';
 import { Package, DollarSign, Store as StoreIcon, Loader2 } from 'lucide-react';
 import Loader from '@/components/ui/loader';
+import { where } from 'firebase/firestore';
 
 function StatCard({ title, value, icon: Icon, loading }: { title: string, value: string | number, icon: React.ElementType, loading: boolean }) {
   return (
@@ -32,7 +33,7 @@ export default function StoreDashboardPage() {
   const storeId = params.storeId as string;
   const { appUser } = useAuth();
   const { data: store, loading: storeLoading } = useDocument<Store>(`Stores/${storeId}`);
-  const { data: storeProducts, loading: productsLoading } = useFirestoreQuery<StoreProduct>(`Stores/${storeId}/StoreProducts`);
+  const { data: storeProducts, loading: productsLoading } = useFirestoreQuery<StoreProduct>('Inventory', [where('storeId', '==', storeId)]);
 
   const averagePrice = useMemo(() => {
     if (!storeProducts || storeProducts.length === 0) return 0;

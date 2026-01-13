@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { StoreProduct } from "@/lib/types";
 import { updateStoreProduct } from "@/app/store/[storeId]/my-products/actions";
 import { useAuth } from "@/context/auth-context";
+import { revalidatePath } from "next/cache";
 
 const storeProductSchema = z.object({
   price: z.coerce.number().min(0, "El precio no puede ser negativo."),
@@ -56,7 +57,7 @@ export function StoreProductForm({ storeId, product, onSuccess }: StoreProductFo
         formData.append('storeSpecificImage', data.storeSpecificImage);
     }
     
-    const result = await updateStoreProduct(storeId, product.id, formData);
+    const result = await updateStoreProduct(product.id, formData);
     
     if (result?.errors) {
         if (result.errors._form) {
