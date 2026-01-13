@@ -98,11 +98,9 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
                 <Card>
                     <CardHeader><CardTitle>Información General</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
-                        <FormItem className="space-y-2">
+                        <FormItem>
                             <Label>Nombre de la tienda</Label>
-                            <FormControl>
-                                <Input value={store.name} disabled />
-                            </FormControl>
+                            <Input value={store.name} disabled />
                             <FormDescription>El nombre de la tienda solo puede ser cambiado por un administrador.</FormDescription>
                         </FormItem>
                          <div className="space-y-2">
@@ -163,9 +161,7 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
                     </Button>
                 )}
                  {!canEdit && (
-                    <FormItem>
-                        <FormDescription className="text-sm text-muted-foreground">Solo los gerentes de tienda pueden editar esta información.</FormDescription>
-                    </FormItem>
+                    <FormDescription>Solo los gerentes de tienda pueden editar esta información.</FormDescription>
                 )}
             </form>
             </Form>
