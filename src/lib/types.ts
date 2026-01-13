@@ -38,6 +38,7 @@ export interface StoreProduct {
     productId: string;
     price: number;
     isAvailable: boolean;
+    currentStock: number;
     storeSpecificImage?: string;
     // Combinamos la info del producto global para facilitar la visualización
     name: string;

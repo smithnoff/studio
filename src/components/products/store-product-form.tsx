@@ -22,6 +22,7 @@ import { useAuth } from "@/context/auth-context";
 
 const storeProductSchema = z.object({
   price: z.coerce.number().min(0, "El precio no puede ser negativo."),
+  currentStock: z.coerce.number().int('El stock debe ser un número entero.').min(0, 'El stock no puede ser negativo.'),
   isAvailable: z.boolean(),
   storeSpecificImage: z.string().url("Debe ser una URL válida").optional().or(z.literal('')),
 });
@@ -43,6 +44,7 @@ export function StoreProductForm({ storeId, product, onSuccess }: StoreProductFo
     resolver: zodResolver(storeProductSchema),
     defaultValues: {
       price: product.price || 0,
+      currentStock: product.currentStock || 0,
       isAvailable: product.isAvailable,
       storeSpecificImage: product.storeSpecificImage || "",
     },
@@ -51,6 +53,7 @@ export function StoreProductForm({ storeId, product, onSuccess }: StoreProductFo
   const onSubmit = async (data: StoreProductFormValues) => {
     const formData = new FormData();
     formData.append('price', String(data.price));
+    formData.append('currentStock', String(data.currentStock));
     formData.append('isAvailable', String(data.isAvailable));
     if (data.storeSpecificImage) {
         formData.append('storeSpecificImage', data.storeSpecificImage);
@@ -61,11 +64,15 @@ export function StoreProductForm({ storeId, product, onSuccess }: StoreProductFo
     if (result?.errors) {
         if (result.errors._form) {
             form.setError("root.serverError", { message: result.errors._form.join(", ") });
+        } else {
+             Object.entries(result.errors).forEach(([key, value]) => {
+                form.setError(key as keyof StoreProductFormValues, { message: value?.join(", ") });
+            });
         }
     } else {
         toast({
             title: "Producto Actualizado",
-            description: `El producto "${product.productName}" ha sido actualizado en tu tienda.`,
+            description: `El producto "${product.name}" ha sido actualizado en tu tienda.`,
         });
         onSuccess();
     }
@@ -74,30 +81,50 @@ export function StoreProductForm({ storeId, product, onSuccess }: StoreProductFo
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Precio</FormLabel>
-              <FormControl>
-                <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">$</span>
-                    <Input 
+        <div className="grid grid-cols-2 gap-4">
+            <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Precio</FormLabel>
+                <FormControl>
+                    <div className="relative">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-muted-foreground">$</span>
+                        <Input 
+                            type="number" 
+                            step="0.01" 
+                            placeholder="19.99" 
+                            className="pl-7"
+                            disabled={!canEditPrice}
+                            {...field} 
+                        />
+                    </div>
+                </FormControl>
+                {!canEditPrice && <FormDescription className="text-xs">Solo gerentes pueden editar.</FormDescription>}
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+             <FormField
+            control={form.control}
+            name="currentStock"
+            render={({ field }) => (
+                <FormItem>
+                <FormLabel>Stock Actual</FormLabel>
+                <FormControl>
+                     <Input 
                         type="number" 
-                        step="0.01" 
-                        placeholder="19.99" 
-                        className="pl-7"
-                        disabled={!canEditPrice}
+                        step="1" 
+                        placeholder="100" 
                         {...field} 
                     />
-                </div>
-              </FormControl>
-              {!canEditPrice && <FormDescription>Solo los gerentes pueden cambiar el precio.</FormDescription>}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                </FormControl>
+                <FormMessage />
+                </FormItem>
+            )}
+            />
+        </div>
         
         <FormField
           control={form.control}

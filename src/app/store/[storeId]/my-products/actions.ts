@@ -76,6 +76,7 @@ export async function addProductToStore(formData: FormData) {
       storeId: storeId,
       price: 0,
       isAvailable: true,
+      currentStock: 0,
       // Denormalize product data for easier display
       name: productData.name,
       brand: productData.brand,
@@ -93,6 +94,7 @@ export async function addProductToStore(formData: FormData) {
 
 const updateStoreProductSchema = z.object({
   price: z.coerce.number().min(0, 'El precio no puede ser negativo.'),
+  currentStock: z.coerce.number().int('El stock debe ser un número entero.').min(0, 'El stock no puede ser negativo.'),
   isAvailable: z.enum(['true', 'false']).transform(v => v === 'true'),
   storeSpecificImage: z.string().url().optional().or(z.literal('')),
 });

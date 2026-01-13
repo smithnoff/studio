@@ -197,6 +197,7 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
               <TableHead className="w-[100px]">Imagen</TableHead>
               <TableHead>Nombre</TableHead>
               <TableHead>Precio</TableHead>
+              <TableHead>Stock</TableHead>
               <TableHead>Disponibilidad</TableHead>
               <TableHead className="text-right w-[80px]">Acciones</TableHead>
             </TableRow>
@@ -204,7 +205,7 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
           <TableBody>
             {storeProducts.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center">
+                <TableCell colSpan={6} className="h-24 text-center">
                   No tienes productos en tu tienda todavía.
                 </TableCell>
               </TableRow>
@@ -213,15 +214,20 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
                 <TableCell>
                   <Image
                     src={product.storeSpecificImage || product.globalImage || `https://picsum.photos/seed/${product.productId}/64/64`}
-                    alt={product.productName}
+                    alt={product.name}
                     width={64}
                     height={64}
                     data-ai-hint="product photo"
                     className="rounded-md object-cover"
                   />
                 </TableCell>
-                <TableCell className="font-medium">{product.productName}</TableCell>
+                <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell>${product.price.toFixed(2)}</TableCell>
+                <TableCell>
+                    <Badge variant={product.currentStock > 0 ? 'outline' : 'destructive'}>
+                        {product.currentStock} en stock
+                    </Badge>
+                </TableCell>
                 <TableCell>
                   <Badge variant={product.isAvailable ? 'default' : 'secondary'}>
                     {product.isAvailable ? 'Disponible' : 'No Disponible'}
@@ -267,7 +273,7 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
             <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>Gestionar Producto de Tienda</DialogTitle>
-                    <DialogDescription>{selectedProduct?.productName}</DialogDescription>
+                    <DialogDescription>{selectedProduct?.name}</DialogDescription>
                 </DialogHeader>
                 {selectedProduct && <StoreProductForm storeId={storeId} product={selectedProduct} onSuccess={() => setEditFormOpen(false)} />}
             </DialogContent>
@@ -278,7 +284,7 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
                 <AlertDialogHeader>
                 <AlertDialogTitle>¿Estas seguro de esta acción?</AlertDialogTitle>
                 <AlertDialogDescription>
-                    Esta acción eliminará el producto <span className="font-semibold">"{selectedProduct?.productName}"</span> de tu tienda. No se eliminará del catálogo global.
+                    Esta acción eliminará el producto <span className="font-semibold">"{selectedProduct?.name}"</span> de tu tienda. No se eliminará del catálogo global.
                 </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
