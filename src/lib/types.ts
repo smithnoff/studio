@@ -45,6 +45,9 @@ export interface StoreProduct {
     brand: string;
     category: string;
     globalImage: string;
+    // Info de la tienda denormalizada para búsquedas
+    storeName: string;
+    storeAddress: string;
 }
 
 
