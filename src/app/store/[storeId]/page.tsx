@@ -27,9 +27,10 @@ function StatCard({ title, value, icon: Icon, loading }: { title: string, value:
 }
 
 export default function StoreDashboardPage({ params }: { params: { storeId: string }}) {
+  const { storeId } = params;
   const { appUser } = useAuth();
-  const { data: store, loading: storeLoading } = useDocument<Store>(`Stores/${params.storeId}`);
-  const { data: storeProducts, loading: productsLoading } = useFirestoreQuery<StoreProduct>(`Stores/${params.storeId}/StoreProducts`);
+  const { data: store, loading: storeLoading } = useDocument<Store>(`Stores/${storeId}`);
+  const { data: storeProducts, loading: productsLoading } = useFirestoreQuery<StoreProduct>(`Stores/${storeId}/StoreProducts`);
 
   const averagePrice = useMemo(() => {
     if (!storeProducts || storeProducts.length === 0) return 0;
