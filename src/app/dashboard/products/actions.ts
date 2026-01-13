@@ -2,8 +2,9 @@
 
 import { z } from "zod";
 import { db } from "@/lib/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc, query, where, getCountFromServer } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
+import type { Store } from "@/lib/types";
 
 const productSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -12,13 +13,11 @@ const productSchema = z.object({
   category: z.string().min(1, "Category is required"),
   image: z.string().url("Must be a valid URL").optional().or(z.literal('')),
   tags: z.string().optional(),
-  availableIn: z.string().optional(),
-  storeId: z.string().min(1, "Store ID is required"),
+  storeId: z.string().min(1, "A primary store is required"),
 });
 
 export async function createProduct(formData: FormData) {
     const values = Object.fromEntries(formData.entries());
-
     const validatedFields = productSchema.safeParse(values);
 
     if (!validatedFields.success) {
@@ -27,21 +26,41 @@ export async function createProduct(formData: FormData) {
         };
     }
     
-    const { tags, availableIn, ...productData } = validatedFields.data;
+    const { tags, ...productData } = validatedFields.data;
 
     try {
+        // Check store subscription limit
+        const storeRef = doc(db, "Stores", productData.storeId);
+        const storeSnap = await getDoc(storeRef);
+
+        if (!storeSnap.exists()) {
+            return { errors: { _form: ["Selected store does not exist."] } };
+        }
+
+        const store = storeSnap.data() as Store;
+        const { maxProducts } = store;
+
+        const productsQuery = query(collection(db, "Products"), where("storeId", "==", productData.storeId));
+        const currentProductCount = (await getCountFromServer(productsQuery)).data().count;
+
+        if (currentProductCount >= maxProducts) {
+            return { errors: { _form: [`Product limit of ${maxProducts} for store "${store.name}" has been reached. Please upgrade the subscription plan.`] } };
+        }
+
         await addDoc(collection(db, "Products"), {
             ...productData,
             normalizedName: productData.name.toLowerCase(),
             tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-            availableIn: availableIn ? availableIn.split(',').map(id => id.trim()) : [],
+            availableIn: [productData.storeId], // Initially available in its primary store
             image: productData.image || `https://picsum.photos/seed/${productData.name}/400/400`,
             price: 0,
         });
         revalidatePath("/dashboard/products");
         return { message: "Product created successfully." };
-    } catch (e) {
+    } catch (e: any) {
         console.error(e);
-        return { message: "Failed to create product." };
+        return { errors: { _form: ["Failed to create product."] } };
     }
 }
+
+    

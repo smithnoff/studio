@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { useFirestoreSubscription } from '@/hooks/use-firestore-subscription';
-import type { Product } from '@/lib/types';
+import type { Product, Store } from '@/lib/types';
 import Loader from '@/components/ui/loader';
 import {
   Table,
@@ -20,22 +20,26 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { PageHeader } from '../ui/page-header';
-import { Badge } from '../ui/badge';
 import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { ProductForm } from './product-form';
 
 
-function formatPrice(price: number) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(price);
-}
-
 export default function ProductsClient() {
-  const { data: products, loading, error } = useFirestoreSubscription<Product>('Products');
+  const { data: products, loading: productsLoading, error: productsError } = useFirestoreSubscription<Product>('Products');
+  const { data: stores, loading: storesLoading, error: storesError } = useFirestoreSubscription<Store>('Stores');
   const [isDialogOpen, setDialogOpen] = useState(false);
+
+  const loading = productsLoading || storesLoading;
+  const error = productsError || storesError;
+
+  const storesMap = useMemo(() => {
+    return stores.reduce((acc, store) => {
+        acc[store.id] = store.name;
+        return acc;
+    }, {} as Record<string, string>);
+  }, [stores]);
+
 
   if (loading) return <Loader className="h-[50vh]" />;
   if (error) return <p className="text-destructive">Error: {error.message}</p>;
@@ -55,8 +59,8 @@ export default function ProductsClient() {
               <TableHead className="w-[100px]">Imagen</TableHead>
               <TableHead>Nombre</TableHead>
               <TableHead>Marca</TableHead>
+              <TableHead>Tienda Principal</TableHead>
               <TableHead>Categoría</TableHead>
-              <TableHead className="text-right">Precio</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -81,9 +85,11 @@ export default function ProductsClient() {
                 <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell>{product.brand}</TableCell>
                 <TableCell>
-                    <Badge variant="secondary">{product.category}</Badge>
+                    {storesMap[product.storeId] || 'Unknown'}
                 </TableCell>
-                <TableCell className="text-right font-mono">{formatPrice(product.price)}</TableCell>
+                <TableCell>
+                    {product.category}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -101,3 +107,5 @@ export default function ProductsClient() {
     </>
   );
 }
+
+    

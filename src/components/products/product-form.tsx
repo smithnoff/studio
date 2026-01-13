@@ -16,6 +16,10 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { createProduct } from "@/app/dashboard/products/actions";
+import { useFirestoreSubscription } from "@/hooks/use-firestore-subscription";
+import type { Store } from "@/lib/types";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Loader from "../ui/loader";
 
 const productSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -24,8 +28,7 @@ const productSchema = z.object({
   category: z.string().min(1, "Category is required"),
   image: z.string().url("Must be a valid URL").optional().or(z.literal('')),
   tags: z.string().optional(),
-  availableIn: z.string().optional(),
-  storeId: z.string().min(1, "Store ID is required"),
+  storeId: z.string().min(1, "A primary store is required"),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -36,6 +39,8 @@ interface ProductFormProps {
 
 export function ProductForm({ onSuccess }: ProductFormProps) {
   const { toast } = useToast();
+  const { data: stores, loading: storesLoading } = useFirestoreSubscription<Store>('Stores');
+
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
@@ -45,7 +50,6 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
       category: "",
       image: "",
       tags: "",
-      availableIn: "",
       storeId: ""
     },
   });
@@ -58,10 +62,13 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
         }
     });
 
+    form.clearErrors();
     const result = await createProduct(formData);
     
     if (result?.errors) {
-        // Handle server-side validation errors if necessary
+        if (result.errors._form) {
+          form.setError("root.serverError", { message: result.errors._form.join(", ") });
+        }
     } else {
         toast({
             title: "Product Created",
@@ -126,6 +133,36 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="storeId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Tienda Principal</FormLabel>
+               <Select onValueChange={field.onChange} defaultValue={field.value} disabled={storesLoading}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccione una tienda" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {storesLoading ? (
+                    <div className="flex items-center justify-center p-4">
+                      <Loader text="Cargando tiendas..." />
+                    </div>
+                  ) : (
+                    stores.map(store => (
+                      <SelectItem key={store.id} value={store.id}>
+                        {store.name} ({store.subscriptionPlan})
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
          <FormField
           control={form.control}
           name="image"
@@ -152,32 +189,12 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
             </FormItem>
           )}
         />
-         <FormField
-          control={form.control}
-          name="availableIn"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Available In (Store IDs, comma-separated)</FormLabel>
-              <FormControl>
-                <Input placeholder="storeId1,storeId2" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-         <FormField
-          control={form.control}
-          name="storeId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Default Store ID</FormLabel>
-              <FormControl>
-                <Input placeholder="defaultStoreId" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        
+        {form.formState.errors.root?.serverError && (
+          <p className="text-sm font-medium text-destructive">
+            {form.formState.errors.root.serverError.message}
+          </p>
+        )}
 
         <Button type="submit" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting ? "Saving..." : "Save Product"}
@@ -186,3 +203,5 @@ export function ProductForm({ onSuccess }: ProductFormProps) {
     </Form>
   );
 }
+
+    
