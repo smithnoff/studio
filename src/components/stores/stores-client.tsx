@@ -83,10 +83,10 @@ export default function StoresClient() {
 
   return (
     <>
-      <PageHeader title="Stores" description="Manage your participating stores.">
+      <PageHeader title="Tiendas" description="Administra las tiendas .">
         <Button onClick={handleAddNew}>
             <PlusCircle className="mr-2 h-4 w-4" />
-            Create New Store
+            Crear nueva tienda
         </Button>
       </PageHeader>
       
@@ -94,11 +94,11 @@ export default function StoresClient() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[80px]">Image</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Address</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead className="text-right w-[80px]">Actions</TableHead>
+              <TableHead className="w-[80px]">Imagen</TableHead>
+              <TableHead>Nombre</TableHead>
+              <TableHead>Dirección</TableHead>
+              <TableHead>Teléfono</TableHead>
+              <TableHead className="text-right w-[80px]">Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -127,18 +127,18 @@ export default function StoresClient() {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
+                                <span className="sr-only">Abrir menu</span>
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => handleEdit(store)}>
                                 <Edit className="mr-2 h-4 w-4" />
-                                <span>Edit</span>
+                                <span>Editar</span>
                             </DropdownMenuItem>
                             <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => handleDelete(store)}>
                                 <Trash2 className="mr-2 h-4 w-4" />
-                                <span>Delete</span>
+                                <span>Borrar</span>
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -161,16 +161,16 @@ export default function StoresClient() {
       <AlertDialog open={isAlertOpen} onOpenChange={setAlertOpen}>
         <AlertDialogContent>
             <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>¿Estas seguro de esta acción?</AlertDialogTitle>
             <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete the store 
+                Esta acción no se puede deshacer y se eliminara la tienda permanentement 
                 <span className="font-semibold"> "{selectedStore?.name}"</span>.
             </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={confirmDelete} className="bg-destructive hover:bg-destructive/90">
-                Delete
+                Borrar
             </AlertDialogAction>
             </AlertDialogFooter>
         </AlertDialogContent>

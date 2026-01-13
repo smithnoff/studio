@@ -50,5 +50,6 @@ export interface AppUser {
   favoriteStoreIds: string[];
   createdAt: number;
   name: string;
-  rol: 'admin' | 'user';
+  rol: 'admin' | 'store_manager' | 'store_employee' | 'customer';
+  storeId?: string;
 }

@@ -35,7 +35,7 @@ export default function DashboardPage() {
     <div>
       <PageHeader
         title="Dashboard"
-        description={`Welcome back, ${user?.email || 'Admin'}!`}
+        description={`Welcome back, ${user?.displayName || 'Admin'}!`}
       />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <StatCard title="Total Stores" value={stores.length} icon={Store} loading={storesLoading} />

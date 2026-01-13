@@ -42,21 +42,21 @@ export default function ProductsClient() {
 
   return (
     <>
-      <PageHeader title="Products" description="Browse the global product catalog.">
+      <PageHeader title="Productos" description="Busca en el catálogo global de productos.">
          <Button onClick={() => setDialogOpen(true)}>
             <PlusCircle className="mr-2 h-4 w-4" />
-            Create New Product
+            Crear Nuevo Producto
         </Button>
       </PageHeader>
       <div className="bg-card rounded-lg shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">Image</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Brand</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead className="text-right">Price</TableHead>
+              <TableHead className="w-[100px]">Imagen</TableHead>
+              <TableHead>Nombre</TableHead>
+              <TableHead>Marca</TableHead>
+              <TableHead>Categoría</TableHead>
+              <TableHead className="text-right">Precio</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -93,7 +93,7 @@ export default function ProductsClient() {
       <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>Create New Product</DialogTitle>
+            <DialogTitle>Crear Nuevo Producto</DialogTitle>
           </DialogHeader>
           <ProductForm onSuccess={() => setDialogOpen(false)} />
         </DialogContent>

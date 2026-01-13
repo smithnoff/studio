@@ -28,6 +28,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'drivers.vit.gob.ve',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

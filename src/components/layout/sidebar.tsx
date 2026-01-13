@@ -18,9 +18,9 @@ import {
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/dashboard/stores', label: 'Stores', icon: Store },
-  { href: '/dashboard/products', label: 'Products', icon: Package },
-  { href: '/dashboard/users', label: 'Users', icon: Users },
+  { href: '/dashboard/stores', label: 'Tiendas', icon: Store },
+  { href: '/dashboard/products', label: 'Productos', icon: Package },
+  { href: '/dashboard/users', label: 'Usuarios', icon: Users },
 ];
 
 const NavItem = ({ href, label, icon: Icon }: typeof navItems[0]) => {
@@ -70,7 +70,7 @@ export default function Sidebar() {
         <div className="bg-primary p-2 rounded-lg">
             <Palette className="h-6 w-6 text-primary-foreground" />
         </div>
-        <h1 className="text-xl font-bold">Akista</h1>
+        <h1 className="text-xl font-bold">AkistApp</h1>
       </div>
       <nav className="flex-grow space-y-1">
         {navItems.map((item) => (
@@ -80,7 +80,7 @@ export default function Sidebar() {
       <div className="mt-auto">
         <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
-          Logout
+          Cerrar sesión
         </Button>
       </div>
     </aside>

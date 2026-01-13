@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from 'react';
 import { useFirestoreSubscription } from '@/hooks/use-firestore-subscription';
 import type { AppUser } from '@/lib/types';
 import Loader from '@/components/ui/loader';
@@ -14,6 +15,11 @@ import {
 import { PageHeader } from '../ui/page-header';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Button } from '@/components/ui/button';
+import { PlusCircle } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { UserForm } from './user-form';
+
 
 const getInitials = (name: string) => {
     const names = name.split(' ');
@@ -26,22 +32,28 @@ const getInitials = (name: string) => {
 
 export default function UsersClient() {
   const { data: users, loading, error } = useFirestoreSubscription<AppUser>('Users');
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
   if (loading) return <Loader className="h-[50vh]" />;
   if (error) return <p className="text-destructive">Error: {error.message}</p>;
 
   return (
     <>
-      <PageHeader title="Users" description="View all registered users." />
+      <PageHeader title="Usuarios" description="Ver todos los usuarios registrados.">
+         <Button onClick={() => setDialogOpen(true)}>
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Crear Nuevo Usuario
+        </Button>
+      </PageHeader>
       <div className="bg-card rounded-lg shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>
                 <TableHead className="w-[80px]">Avatar</TableHead>
-              <TableHead>Name</TableHead>
+              <TableHead>Nombre</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead>City</TableHead>
-              <TableHead>Role</TableHead>
+              <TableHead>Ciudad</TableHead>
+              <TableHead>Rol</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -72,6 +84,14 @@ export default function UsersClient() {
           </TableBody>
         </Table>
       </div>
+      <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Crear Nuevo Usuario</DialogTitle>
+          </DialogHeader>
+          <UserForm onSuccess={() => setDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
