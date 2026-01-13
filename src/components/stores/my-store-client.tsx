@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -98,14 +99,14 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
                 <Card>
                     <CardHeader><CardTitle>Información General</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
-                        <FormItem>
-                            <Label>Nombre de la tienda</Label>
-                            <Input value={store.name} disabled />
-                            <FormDescription>El nombre de la tienda solo puede ser cambiado por un administrador.</FormDescription>
-                        </FormItem>
+                        <div className="space-y-2">
+                            <Label htmlFor="storeName">Nombre de la tienda</Label>
+                            <Input id="storeName" value={store.name} disabled />
+                            <p className="text-sm text-muted-foreground">El nombre de la tienda solo puede ser cambiado por un administrador.</p>
+                        </div>
                          <div className="space-y-2">
-                            <Label>Dirección</Label>
-                            <Input value={`${store.address}, ${store.city}, ${store.zipcode}`} disabled />
+                            <Label htmlFor="storeAddress">Dirección</Label>
+                            <Input id="storeAddress" value={`${store.address}, ${store.city}, ${store.zipcode}`} disabled />
                         </div>
                     </CardContent>
                 </Card>
@@ -155,13 +156,12 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
                     </CardContent>
                 </Card>
                 
-                {canEdit && (
+                {canEdit ? (
                     <Button type="submit" disabled={form.formState.isSubmitting}>
                         {form.formState.isSubmitting ? "Guardando..." : "Guardar Cambios"}
                     </Button>
-                )}
-                 {!canEdit && (
-                    <FormDescription>Solo los gerentes de tienda pueden editar esta información.</FormDescription>
+                ) : (
+                    <p className="text-sm text-muted-foreground">Solo los gerentes de tienda pueden editar esta información.</p>
                 )}
             </form>
             </Form>
@@ -172,19 +172,19 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
                     <CardTitle>Plan de Suscripción</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <FormItem>
+                    <div className="space-y-1">
                         <Label className="text-sm text-muted-foreground">Plan actual</Label>
                         <p className="font-semibold text-primary text-lg">{store.subscriptionPlan}</p>
-                    </FormItem>
-                     <FormItem>
+                    </div>
+                     <div className="space-y-1">
                         <Label className="text-sm text-muted-foreground">Límite de productos</Label>
                         <p className="font-semibold">{store.maxProducts}</p>
-                    </FormItem>
-                     <FormItem>
+                    </div>
+                     <div className="space-y-1">
                         <Label className="text-sm text-muted-foreground">Permite reservas</Label>
                         <p className="font-semibold">{store.allowReservations ? "Sí" : "No"}</p>
-                    </FormItem>
-                    <FormDescription>Para cambiar de plan, contacta con el soporte.</FormDescription>
+                    </div>
+                    <p className="text-sm text-muted-foreground pt-2">Para cambiar de plan, contacta con el soporte.</p>
                 </CardContent>
              </Card>
         </div>
@@ -192,3 +192,5 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
     </>
   );
 }
+
+    
