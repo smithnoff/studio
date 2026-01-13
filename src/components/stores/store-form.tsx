@@ -14,9 +14,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import type { Store } from "@/lib/types";
+import type { Store, SubscriptionPlan } from "@/lib/types";
 import { createStore, updateStore } from "@/app/dashboard/stores/actions";
 import { useEffect } from "react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Card } from "../ui/card";
+import { cn } from "@/lib/utils";
 
 const storeSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -27,6 +30,7 @@ const storeSchema = z.object({
   latitude: z.coerce.number(),
   longitude: z.coerce.number(),
   imageUrl: z.string().url("Must be a valid URL").optional().or(z.literal('')),
+  subscriptionPlan: z.enum(['BASIC', 'STANDARD', 'PREMIUM']),
 });
 
 type StoreFormValues = z.infer<typeof storeSchema>;
@@ -35,6 +39,12 @@ interface StoreFormProps {
   store?: Store | null;
   onSuccess: () => void;
 }
+
+const planOptions: { value: SubscriptionPlan, title: string, price: string, features: string[] }[] = [
+    { value: 'BASIC', title: 'Vitrina Digital', price: '$5/mes', features: ['20 Productos', 'Sin Reservas', 'No Destacado'] },
+    { value: 'STANDARD', title: 'Venta Activa', price: '$15/mes', features: ['200 Productos', 'Permite Reservas', 'No Destacado'] },
+    { value: 'PREMIUM', title: 'Supermercado', price: '$50/mes', features: ['10,000 Productos', 'Permite Reservas', 'Destacado'] },
+];
 
 export function StoreForm({ store, onSuccess }: StoreFormProps) {
   const { toast } = useToast();
@@ -49,6 +59,7 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
       latitude: store?.latitude || 0.0,
       longitude: store?.longitude || 0.0,
       imageUrl: store?.imageUrl || "",
+      subscriptionPlan: store?.subscriptionPlan || 'BASIC',
     },
   });
 
@@ -62,6 +73,7 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
         latitude: store?.latitude || 0.0,
         longitude: store?.longitude || 0.0,
         imageUrl: store?.imageUrl || "",
+        subscriptionPlan: store?.subscriptionPlan || 'BASIC',
     });
   }, [store, form]);
 
@@ -89,6 +101,45 @@ export function StoreForm({ store, onSuccess }: StoreFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
+        
+        <FormField
+          control={form.control}
+          name="subscriptionPlan"
+          render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel>Plan de Suscripción</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+                >
+                  {planOptions.map(plan => (
+                    <FormItem key={plan.value}>
+                      <FormControl>
+                          <RadioGroupItem value={plan.value} className="sr-only" />
+                      </FormControl>
+                      <FormLabel className="cursor-pointer">
+                        <Card className={cn(
+                            "p-4 transition-all",
+                             field.value === plan.value ? "border-primary ring-2 ring-primary" : "hover:border-muted-foreground/50"
+                        )}>
+                            <div className="font-bold">{plan.title}</div>
+                            <div className="text-lg font-semibold text-primary">{plan.price}</div>
+                            <ul className="mt-2 text-xs text-muted-foreground space-y-1">
+                                {plan.features.map((feature, i) => <li key={i}>{feature}</li>)}
+                            </ul>
+                        </Card>
+                      </FormLabel>
+                    </FormItem>
+                  ))}
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
         <FormField
           control={form.control}
           name="name"

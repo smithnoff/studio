@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { db } from "@/lib/firebase";
-import { collection, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
 
 const storeSchema = z.object({
@@ -14,7 +14,19 @@ const storeSchema = z.object({
     latitude: z.coerce.number(),
     longitude: z.coerce.number(),
     imageUrl: z.string().url("Must be a valid URL").optional().or(z.literal('')),
+    subscriptionPlan: z.enum(['BASIC', 'STANDARD', 'PREMIUM']),
 });
+
+function getPlanDetails(plan: 'BASIC' | 'STANDARD' | 'PREMIUM') {
+    switch (plan) {
+        case 'BASIC':
+            return { maxProducts: 20, allowReservations: false, featured: false };
+        case 'STANDARD':
+            return { maxProducts: 200, allowReservations: true, featured: false };
+        case 'PREMIUM':
+            return { maxProducts: 10000, allowReservations: true, featured: true };
+    }
+}
 
 export async function createStore(formData: FormData) {
     const values = {
@@ -26,6 +38,7 @@ export async function createStore(formData: FormData) {
         latitude: formData.get("latitude") as string,
         longitude: formData.get("longitude") as string,
         imageUrl: formData.get("imageUrl") as string,
+        subscriptionPlan: formData.get("subscriptionPlan") as 'BASIC' | 'STANDARD' | 'PREMIUM',
     };
 
     const validatedFields = storeSchema.safeParse(values);
@@ -36,9 +49,14 @@ export async function createStore(formData: FormData) {
         };
     }
 
+    const planDetails = getPlanDetails(validatedFields.data.subscriptionPlan);
+
     try {
         await addDoc(collection(db, "Stores"), {
             ...validatedFields.data,
+            ...planDetails,
+            isActive: true,
+            createdAt: Date.now(),
             imageUrl: validatedFields.data.imageUrl || `https://picsum.photos/seed/${validatedFields.data.name}/100/100`
         });
         revalidatePath("/dashboard/stores");
@@ -58,6 +76,7 @@ export async function updateStore(id: string, formData: FormData) {
         latitude: formData.get("latitude") as string,
         longitude: formData.get("longitude") as string,
         imageUrl: formData.get("imageUrl") as string,
+        subscriptionPlan: formData.get("subscriptionPlan") as 'BASIC' | 'STANDARD' | 'PREMIUM',
     };
 
     const validatedFields = storeSchema.safeParse(values);
@@ -68,10 +87,13 @@ export async function updateStore(id: string, formData: FormData) {
         };
     }
     
+    const planDetails = getPlanDetails(validatedFields.data.subscriptionPlan);
+    
     try {
         const storeRef = doc(db, "Stores", id);
         await updateDoc(storeRef, {
             ...validatedFields.data,
+            ...planDetails,
             imageUrl: validatedFields.data.imageUrl || `https://picsum.photos/seed/${validatedFields.data.name}/100/100`
         });
         revalidatePath("/dashboard/stores");

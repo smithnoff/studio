@@ -97,6 +97,7 @@ export default function StoresClient() {
               <TableHead className="w-[80px]">Imagen</TableHead>
               <TableHead>Nombre</TableHead>
               <TableHead>Dirección</TableHead>
+              <TableHead>Plan</TableHead>
               <TableHead>Teléfono</TableHead>
               <TableHead className="text-right w-[80px]">Acciones</TableHead>
             </TableRow>
@@ -104,7 +105,7 @@ export default function StoresClient() {
           <TableBody>
             {stores.length === 0 ? (
                 <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center">
+                    <TableCell colSpan={6} className="h-24 text-center">
                         No stores found.
                     </TableCell>
                 </TableRow>
@@ -122,6 +123,11 @@ export default function StoresClient() {
                 </TableCell>
                 <TableCell className="font-medium">{store.name}</TableCell>
                 <TableCell>{store.address}, {store.city} {store.zipcode}</TableCell>
+                <TableCell>
+                  <Badge variant={store.subscriptionPlan === 'PREMIUM' ? 'default' : 'secondary'}>
+                    {store.subscriptionPlan}
+                  </Badge>
+                </TableCell>
                 <TableCell>{store.phone}</TableCell>
                 <TableCell className="text-right">
                     <DropdownMenu>

@@ -1,5 +1,7 @@
 import type { Timestamp } from "firebase/firestore";
 
+export type SubscriptionPlan = 'BASIC' | 'STANDARD' | 'PREMIUM';
+
 export interface Store {
   id: string;
   name: string;
@@ -10,6 +12,12 @@ export interface Store {
   longitude: number;
   phone: string;
   imageUrl: string;
+  subscriptionPlan: SubscriptionPlan;
+  isActive: boolean;
+  maxProducts: number;
+  allowReservations: boolean;
+  featured: boolean;
+  createdAt: number;
 }
 
 export interface Product {
