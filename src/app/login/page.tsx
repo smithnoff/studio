@@ -47,7 +47,7 @@ export default function LoginPage() {
                     <Palette className="h-8 w-8 text-primary-foreground" />
                 </div>
             </div>
-          <CardTitle className="text-2xl font-bold">Akista Admin</CardTitle>
+          <CardTitle className="text-2xl font-bold">AkistApp Admin</CardTitle>
           <CardDescription>Introduce tus credenciales para acceder al panel</CardDescription>
         </CardHeader>
         <CardContent>

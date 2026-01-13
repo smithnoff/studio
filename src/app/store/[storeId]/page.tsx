@@ -1,6 +1,6 @@
-
 "use client";
 
+import { useMemo } from 'react';
 import { useAuth } from '@/context/auth-context';
 import { useDocument } from '@/hooks/use-document';
 import { useFirestoreQuery } from '@/hooks/use-firestore-query';
