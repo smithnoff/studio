@@ -40,7 +40,7 @@ export interface StoreProduct {
     isAvailable: boolean;
     storeSpecificImage?: string;
     // Combinamos la info del producto global para facilitar la visualización
-    productName: string;
+    name: string;
     brand: string;
     category: string;
     globalImage: string;
@@ -73,4 +73,32 @@ export interface AppUser {
   name: string;
   rol: 'admin' | 'store_manager' | 'store_employee' | 'customer';
   storeId?: string;
+}
+
+export interface CartItemSnapshot {
+    productId: string;
+    productName: string;
+    quantity: number;
+    price: number;
+    image: string;
+}
+
+export type OrderStatus = 'PENDING' | 'CONFIRMED' | 'READY' | 'DELIVERED' | 'CANCELLED';
+
+export interface Order {
+    id: string;
+    userId: string;
+    storeId: string;
+    storeName: string;
+    items: CartItemSnapshot[];
+    totalAmount: number;
+    shippingCost: number;
+    deliveryMethod: 'PICKUP' | 'DELIVERY';
+    deliveryAddress: string;
+    comments: string;
+    status: OrderStatus;
+    createdAt: number;
+    // Campos denormalizados del usuario para fácil acceso
+    userName?: string;
+    userEmail?: string;
 }
