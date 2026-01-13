@@ -98,11 +98,13 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
                 <Card>
                     <CardHeader><CardTitle>Información General</CardTitle></CardHeader>
                     <CardContent className="space-y-4">
-                        <div className="space-y-2">
+                        <FormItem className="space-y-2">
                             <Label>Nombre de la tienda</Label>
-                            <Input value={store.name} disabled />
-                             <FormDescription>El nombre de la tienda solo puede ser cambiado por un administrador.</FormDescription>
-                        </div>
+                            <FormControl>
+                                <Input value={store.name} disabled />
+                            </FormControl>
+                            <FormDescription>El nombre de la tienda solo puede ser cambiado por un administrador.</FormDescription>
+                        </FormItem>
                          <div className="space-y-2">
                             <Label>Dirección</Label>
                             <Input value={`${store.address}, ${store.city}, ${store.zipcode}`} disabled />
@@ -161,7 +163,9 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
                     </Button>
                 )}
                  {!canEdit && (
-                    <p className="text-sm text-muted-foreground">Solo los gerentes de tienda pueden editar esta información.</p>
+                    <FormItem>
+                        <FormDescription className="text-sm text-muted-foreground">Solo los gerentes de tienda pueden editar esta información.</FormDescription>
+                    </FormItem>
                 )}
             </form>
             </Form>
@@ -172,18 +176,18 @@ export default function MyStoreClient({ storeId }: MyStoreClientProps) {
                     <CardTitle>Plan de Suscripción</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="space-y-1">
+                    <FormItem>
+                        <Label className="text-sm text-muted-foreground">Plan actual</Label>
                         <p className="font-semibold text-primary text-lg">{store.subscriptionPlan}</p>
-                        <p className="text-sm text-muted-foreground">Plan actual</p>
-                    </div>
-                     <div className="space-y-1">
+                    </FormItem>
+                     <FormItem>
+                        <Label className="text-sm text-muted-foreground">Límite de productos</Label>
                         <p className="font-semibold">{store.maxProducts}</p>
-                        <p className="text-sm text-muted-foreground">Límite de productos</p>
-                    </div>
-                     <div className="space-y-1">
+                    </FormItem>
+                     <FormItem>
+                        <Label className="text-sm text-muted-foreground">Permite reservas</Label>
                         <p className="font-semibold">{store.allowReservations ? "Sí" : "No"}</p>
-                        <p className="text-sm text-muted-foreground">Permite reservas</p>
-                    </div>
+                    </FormItem>
                     <FormDescription>Para cambiar de plan, contacta con el soporte.</FormDescription>
                 </CardContent>
              </Card>
