@@ -211,7 +211,7 @@ export default function StoreProductsClient({ storeId }: StoreProductsClientProp
               <TableRow key={product.id}>
                 <TableCell>
                   <Image
-                    src={product.storeSpecificImage || product.globalImage}
+                    src={product.storeSpecificImage || product.globalImage || `https://picsum.photos/seed/${product.productId}/64/64`}
                     alt={product.name}
                     width={64}
                     height={64}

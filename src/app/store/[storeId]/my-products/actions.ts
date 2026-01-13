@@ -80,7 +80,7 @@ export async function addProductToStore(formData: FormData) {
       name: productData.name,
       brand: productData.brand,
       category: productData.category,
-      globalImage: productData.image,
+      globalImage: productData.image || `https://picsum.photos/seed/${productId}/400/400`,
     });
 
     revalidatePath(`/store/${storeId}/my-products`);
