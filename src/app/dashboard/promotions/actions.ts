@@ -53,7 +53,7 @@ export async function createPromotion(formData: FormData) {
       ...promotionData,
       storeId: storeId,
       storeName: storeData.name,
-      cityId: storeData.zipcode, // Using zipcode as cityId as requested
+      cityId: storeData.zipcode || "", // Fallback to empty string
       type: "promotion",
       createdAt: Date.now(),
       imageUrl: promotionData.imageUrl || `https://picsum.photos/seed/${promotionData.title}/600/300`,
@@ -62,7 +62,7 @@ export async function createPromotion(formData: FormData) {
     revalidatePath("/dashboard/promotions");
     return { message: "Promoción creada exitosamente." };
   } catch (e: any) {
-    return { errors: { _form: ["No se pudo crear la promoción."] } };
+    return { errors: { _form: ["No se pudo crear la promoción. " + e.message] } };
   }
 }
 
@@ -99,7 +99,7 @@ export async function updatePromotion(id: string, formData: FormData) {
        ...promotionData,
        storeId: storeId,
        storeName: storeData.name,
-       cityId: storeData.zipcode,
+       cityId: storeData.zipcode || "", // Fallback to empty string
        imageUrl: promotionData.imageUrl || `https://picsum.photos/seed/${promotionData.title}/600/300`,
     });
 
