@@ -14,7 +14,8 @@ import {
     LogOut,
     Palette,
     ArrowLeft,
-    ShoppingCart
+    ShoppingCart,
+    Megaphone
 } from 'lucide-react';
 import { useDocument } from '@/hooks/use-document';
 import type { Store as StoreType } from '@/lib/types';
@@ -35,6 +36,7 @@ export default function StoreSidebar({ storeId }: StoreSidebarProps) {
         { href: `/store/${storeId}/my-store`, label: 'Mi Tienda', icon: Store },
         { href: `/store/${storeId}/my-products`, label: 'Mis Productos', icon: Package },
         { href: `/store/${storeId}/orders`, label: 'Pedidos', icon: ShoppingCart },
+        { href: `/store/${storeId}/promotions`, label: 'Promociones', icon: Megaphone },
     ];
 
     const handleLogout = async () => {
@@ -73,7 +75,7 @@ export default function StoreSidebar({ storeId }: StoreSidebarProps) {
       </div>
       <nav className="flex-grow space-y-1">
         {navItems.map((item) => {
-            const isActive = pathname === item.href;
+            const isActive = pathname.startsWith(item.href) && (item.href !== `/store/${storeId}` || pathname === `/store/${storeId}`);
             return (
                 <Link key={item.href} href={item.href} passHref>
                     <Button

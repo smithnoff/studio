@@ -13,7 +13,8 @@ import {
     Package, 
     Users, 
     LogOut,
-    Palette
+    Palette,
+    Megaphone
 } from 'lucide-react';
 
 const navItems = [
@@ -21,11 +22,13 @@ const navItems = [
   { href: '/dashboard/stores', label: 'Tiendas', icon: Store },
   { href: '/dashboard/products', label: 'Productos', icon: Package },
   { href: '/dashboard/users', label: 'Usuarios', icon: Users },
+  { href: '/dashboard/promotions', label: 'Promociones', icon: Megaphone },
 ];
 
 const NavItem = ({ href, label, icon: Icon }: typeof navItems[0]) => {
   const pathname = usePathname();
-  const isActive = pathname === href;
+  const isActive = pathname.startsWith(href) && (href !== '/dashboard' || pathname === '/dashboard');
+
 
   return (
     <Link href={href} passHref>

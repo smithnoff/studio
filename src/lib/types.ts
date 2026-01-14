@@ -106,3 +106,16 @@ export interface Order {
     userName?: string;
     userEmail?: string;
 }
+
+export interface Promotion {
+  id: string;
+  title: string;
+  content: string;
+  imageUrl: string;
+  storeId: string;
+  storeName: string; // Denormalized
+  cityId: string; // Zipcode
+  type: string;
+  isActive: boolean;
+  createdAt: number;
+}
