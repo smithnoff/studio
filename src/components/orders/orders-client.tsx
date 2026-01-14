@@ -212,7 +212,7 @@ export default function OrdersClient({ storeId }: OrdersClientProps) {
                   <TableCell className="font-medium">#{order.id.substring(0, 7)}</TableCell>
                   <TableCell>{format(new Date(order.createdAt), 'dd/MM/yy')}</TableCell>
                   <TableCell>{order.userName || 'N/A'}</TableCell>
-                  <TableCell>${(order.totalAmount + order.shippingCost).toFixed(2)}</TableCell>
+                  <TableCell>${(order.totalAmount).toFixed(2)}</TableCell>
                   <TableCell>
                     <Badge variant="outline" className="flex items-center gap-2">
                         <span className={`h-2 w-2 rounded-full ${statusColors[order.status]}`}></span>
